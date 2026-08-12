@@ -23,6 +23,5 @@ jobs:
 
       - name: Execute program
         run: |
-          export PYTHONPATH="${PYTHONPATH}:./src/flintmc"
           pip install -e .
           flintmc test/source_code.flint output/
