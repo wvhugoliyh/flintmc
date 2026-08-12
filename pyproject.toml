@@ -13,7 +13,7 @@ authors = [{ name = "Hugo Li", email = "vvhugoliyh@gmail.com" }]
 dependencies = ["lark", "typer"]
 
 [project.scripts]
-flintmc = "src.flintmc.main:app"
+flintmc = "flintmc.main:app"
 
 [tool.uv.build_backend]
 module-name = "flintmc"
