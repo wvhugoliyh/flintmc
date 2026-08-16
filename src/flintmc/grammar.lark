@@ -29,7 +29,8 @@ else_stmt: "else" _block
 ?term: signed_pow
      | term MUL_OP signed_pow
 
-?signed_pow: SIGN* pow
+?signed_pow: pow
+           | SIGN signed_pow
 
 ?pow: group
     | group "^" pow
