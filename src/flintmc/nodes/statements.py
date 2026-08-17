@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from flintmc.nodes.expression import numeric_value
-from flintmc.nodes.conditional import If, Elif, Else
+from flintmc.nodes.conditional_parts import If, Elif, Else
 
 # Type aliases are used to reduce repetitive code
 type stmt = Assignment | FuncCall | Conditional | Repeat
