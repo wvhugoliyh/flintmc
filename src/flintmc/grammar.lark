@@ -26,13 +26,13 @@ else_stmt: "else" _block
 ?expr: term
      | expr SIGN term
 
-?term: signed_pow
-     | term MUL_OP signed_pow
+?term: signed_power
+     | term MUL_OP signed_power
 
-?signed_pow: SIGN* pow
+?signed_power: SIGN* power
 
-?pow: group
-    | group "^" pow
+?power: group
+      | group "^" power
 
 ?group: "(" expr ")"
       | INT
