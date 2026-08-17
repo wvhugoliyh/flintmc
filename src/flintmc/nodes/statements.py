@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 from flintmc.nodes.expression import numeric_value
 from flintmc.nodes.conditional import If, Elif, Else
 

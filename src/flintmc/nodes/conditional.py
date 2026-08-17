@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 from flintmc.nodes.expression import boolean_value
 from flintmc.nodes.statements import stmt
 
