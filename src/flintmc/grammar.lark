@@ -12,7 +12,7 @@ definition: "def" "func" ID "(" _items{ID, ","}? ")" _block -> func_def
 
 stmt: ID "=" expr                   -> assignment
     | ID "(" _items{expr, ","}? ")" -> func_call
-    | if_stmt elif_stmt else_stmt   -> conditional
+    | if_stmt elif_stmt* else_stmt? -> conditional
     | "repeat" INT _block           -> repeat
 
 // Parts of a conditional
