@@ -3,7 +3,6 @@ from lark import Transformer
 from flintmc.nodes import (
   statements,
   definitions,
-  conditional_parts,
   expression,
 )
 
@@ -36,8 +35,8 @@ class FlintParser(Transformer):
   def conditional(self, children):
     return statements.Conditional(
       children[0],
-      filter_by_type(children[1::], conditional_parts.Elif),
-      children[-1] if isinstance(children[-1], conditional_parts.Else) else None
+      filter_by_type(children[1::], statements.Elif),
+      children[-1] if isinstance(children[-1], statements.Else) else None
     )
 
   def repeat(self, children):
@@ -45,13 +44,13 @@ class FlintParser(Transformer):
 
   
   def if_stmt(self, children):
-    return conditional_parts.If(children[0], children[1::])
+    return statements.If(children[0], children[1::])
 
   def elif_stmt(self, children):
-    return conditional_parts.Elif(children[0], children[1::])
+    return statements.Elif(children[0], children[1::])
 
   def else_stmt(self, children):
-    return conditional_parts.Else(children[::])
+    return statements.Else(children[::])
 
   
   def expr(self, children):

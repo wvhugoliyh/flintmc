@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
-from flintmc.nodes.expression import numeric_value
-from flintmc.nodes.conditional_parts import If, Elif, Else
+from flintmc.nodes.expression import numeric_value, boolean_value
 
 # Type aliases are used to reduce repetitive code
 type stmt = Assignment | FuncCall | Conditional | Repeat
@@ -26,4 +25,19 @@ class Conditional:
 @dataclass
 class Repeat:
   repeat_cnt: int
+  stmts: list[stmt]
+
+
+@dataclass
+class If:
+  condition: boolean_value
+  stmts: list[stmt]
+
+@dataclass
+class Elif:
+  condition: boolean_value
+  stmts: list[stmt]
+
+@dataclass
+class Else:
   stmts: list[stmt]
