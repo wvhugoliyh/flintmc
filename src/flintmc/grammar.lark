@@ -1,0 +1,79 @@
+// Templates / macros
+_items{item, separator}: item (separator item)*
+
+_block: "{" stmt* "}"
+
+// Top level
+start: definition*
+
+definition: "def" "func" ID "(" _items{ID, ","}? ")" _block -> func_def
+          | "def" "tick" _block                             -> tick_def
+          | "def" "load" _block                             -> load_def
+
+stmt: ID "=" expr                   -> assignment
+    | ID "(" _items{expr, ","}? ")" -> func_call
+    | if_stmt elif_stmt* else_stmt? -> conditional
+    | "repeat" INT _block           -> repeat
+
+// Parts of a conditional
+if_stmt: "if" "(" disjunction ")" _block
+
+elif_stmt: "elif" "(" disjunction ")" _block
+
+else_stmt: "else" _block
+
+// Math expressions
+?expr: term
+     | expr SIGN term
+
+?term: signed_power
+     | term MUL_OP signed_power
+
+?signed_power: SIGN* power
+
+?power: group
+      | group "^" power
+
+?group: "(" expr ")"
+      | INT
+      | DOUBLE
+      | ID
+
+// Logical expressions
+?disjunction: conjunction
+            | disjunction "||" conjunction
+
+?conjunction: negation
+            | conjunction "&&" negation
+
+?negation: "!" negation -> logic_not
+         | "(" disjunction ")"
+         | comparison
+         | BOOL
+
+comparison: expr COMPARATOR expr
+
+// ======= TERMINALS =======
+ID: /[a-zA-Z_][a-zA-Z0-9_]*/
+
+// Data types
+INT: /[0-9]+/
+
+DOUBLE.1: /[0-9]/
+
+BOOL: /True|False/
+
+// Operators
+SIGN: /[+-]/
+
+MUL_OP: /[*\/]/
+
+COMPARATOR: /==|!=|<|>|<=|>=/
+
+// Decorative elements
+WHITESPACE: /\s/
+
+COMMENT: /\/{2}.*|\/\*[\s\S]*\*\//
+
+%ignore WHITESPACE
+%ignore COMMENT
