@@ -1,12 +1,12 @@
 def load {
-  a = 1
-  b = 1
-  c = a + b
+  a = 1;
+  b = 1;
+  c = a + b;
 }
 
 def tick {
   // Every tick, calculate the next 3 term of the Fibbonacci sequence
-  a = b + c
-  b = a + c
-  c = a + b
+  a = b + c;
+  b = a + c;
+  c = a + b;
 }
