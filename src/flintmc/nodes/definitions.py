@@ -11,8 +11,10 @@ class FuncDef:
 
 @dataclass
 class TickDef:
+  tick_id: str
   stmts: list[stmt]
 
 @dataclass
 class LoadDef:
+  load_id: str
   stmts: list[stmt]

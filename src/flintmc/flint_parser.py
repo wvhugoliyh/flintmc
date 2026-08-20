@@ -20,10 +20,10 @@ class FlintParser(Transformer):
     )
 
   def tick_def(self, children):
-    return definitions.TickDef(children)
+    return definitions.TickDef(children[0], children[1::])
 
   def load_def(self, children):
-    return definitions.LoadDef(children)
+    return definitions.LoadDef(children[0], children[1::])
 
 
   def assignment(self, children):
