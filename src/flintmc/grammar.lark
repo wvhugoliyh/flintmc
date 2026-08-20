@@ -7,8 +7,8 @@ _block: "{" stmt* "}"
 start: definition*
 
 definition: "def" "func" ID "(" _items{ID, ","}? ")" _block -> func_def
-          | "def" "tick" _block                             -> tick_def
-          | "def" "load" _block                             -> load_def
+          | "def" "tick" ID _block                          -> tick_def
+          | "def" "load" ID _block                          -> load_def
 
 stmt: ID "=" expr ";"                   -> assignment
     | ID "(" _items{expr, ","}? ")" ";" -> func_call

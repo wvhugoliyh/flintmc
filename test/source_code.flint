@@ -1,10 +1,10 @@
-def load {
+def load main_load {
   a = 1;
   b = 1;
   c = a + b;
 }
 
-def tick {
+def tick main_tick {
   // Every tick, calculate the next 3 term of the Fibbonacci sequence
   a = b + c;
   b = a + c;
