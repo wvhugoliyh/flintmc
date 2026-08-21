@@ -69,6 +69,9 @@ class FlintParser(Transformer):
   def power(self, children):
     return expression.MathBinaryOp(children[0], "^", children[1])
 
+  def entity_prop(self, children):
+    return expression.EntityProp(children[0], children[1::])
+  
   def disjunction(self, children):
     return expression.LogicBinaryOp(children[0], "||", children[1])
 
@@ -85,6 +88,9 @@ class FlintParser(Transformer):
   def ID(self, token):
     return str(token)
 
+  def ENTITY_SEL(self, token):
+    return str(token)
+    
   def INT(self, token):
     return int(token)
 
