@@ -31,3 +31,8 @@ class Comparison:
   cmpnd_1: numeric_value
   cmpr: Literal["==", "!=", "<", ">", "<=", ">="]
   cmpnd_2: numeric_value
+
+@dataclass
+class EntityProp:
+  entity_sel: Literal["@s", "@p", "@n", "r"]
+  nbt_path_comps: list[str]
