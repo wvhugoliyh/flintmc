@@ -1,9 +1,25 @@
 from lark import Transformer
 
-from flintmc.nodes import (
-  statements,
-  definitions,
-  expression,
+from flintmc.nodes.definitions import (
+  FuncDef,
+  TickDef,
+  LoadDef,
+)
+
+from flintmc.nodes.statements import (
+  stmt,
+  Assignment,
+  FuncCall,
+  Repeat,
+)
+
+from flintmc.nodes.expression import (
+  MathBinaryOp,
+  MathNeg,
+  LogicBinaryOp,
+  LogicNot,
+  Comparison,
+  EntityProp,
 )
 
 from flintmc.utils import filter_by_type
@@ -13,76 +29,76 @@ class FlintParser(Transformer):
     return children
 
   def func_def(self, children):
-    return definitions.FuncDef(
+    return FuncDef(
       children[0],
       filter_by_type(children[1::], str),
-      filter_by_type(children[1::], statements.stmt)
+      filter_by_type(children[1::], stmt)
     )
 
   def tick_def(self, children):
-    return definitions.TickDef(children[0], children[1::])
+    return TickDef(children[0], children[1::])
 
   def load_def(self, children):
-    return definitions.LoadDef(children[0], children[1::])
+    return LoadDef(children[0], children[1::])
 
 
   def assignment(self, children):
-    return statements.Assignment(children[0], children[1])
+    return Assignment(children[0], children[1])
 
   def func_call(self, children):
-    return statements.FuncCall(children[0], children[1::])
+    return FuncCall(children[0], children[1::])
 
   def conditional(self, children):
-    return statements.Conditional(
+    return Conditional(
       children[0],
-      filter_by_type(children[1::], statements.Elif),
-      children[-1] if isinstance(children[-1], statements.Else) else None
+      filter_by_type(children[1::], Elif),
+      children[-1] if isinstance(children[-1], Else) else None
     )
 
   def repeat(self, children):
-    return statements.Repeat(children[0], children[1::])
+    return Repeat(children[0], children[1::])
 
   
   def if_stmt(self, children):
-    return statements.If(children[0], children[1::])
+    return If(children[0], children[1::])
 
   def elif_stmt(self, children):
-    return statements.Elif(children[0], children[1::])
+    return Elif(children[0], children[1::])
 
   def else_stmt(self, children):
     return statements.Else(children[::])
 
   
   def expr(self, children):
-    return expression.MathBinaryOp(children[0], children[1], children[2])
+    return MathBinaryOp(children[0], children[1], children[2])
 
   def term(self, children):
-    return expression.MathBinaryOp(children[0], children[1], children[2])
+    return MathBinaryOp(children[0], children[1], children[2])
 
   def signed_power(self, children):
     return (
       children[-1]
       if children.count("-") % 2 == 0
-      else expression.MathNeg(children[-1])
+      else MathNeg(children[-1])
     )
 
   def power(self, children):
-    return expression.MathBinaryOp(children[0], "^", children[1])
+    return MathBinaryOp(children[0], "^", children[1])
 
   def entity_prop(self, children):
-    return expression.EntityProp(children[0], children[1::])
+    return EntityProp(children[0], children[1::])
   
   def disjunction(self, children):
-    return expression.LogicBinaryOp(children[0], "||", children[1])
+    return LogicBinaryOp(children[0], "||", children[1])
 
   def conjunction(self, children):
-    return expression.LogicBinaryOp(children[0], "&&", children[1])
+    return LogicBinaryOp(children[0], "&&", children[1])
 
   def logic_not(self, children):
-    return expression.LogicNot(children[0])
+    return LogicNot(children[0])
   
   def comparison(self, children):
-    return expression.Comparison(children[0], children[1], children[2])
+    return Comparison(children[0], children[1], children[2])
 
 
   def ID(self, token):
