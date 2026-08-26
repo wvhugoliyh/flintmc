@@ -1,9 +1,10 @@
 from dataclasses import dataclass
+from typing import Any
 
 from flintmc.nodes.expression import numeric_value, boolean_value
 
 # Type aliases are used to reduce repetitive code
-type stmt = Assignment | FuncCall | Conditional | Repeat
+type stmt = Assignment | FuncCall | Conditional | Repeat | Execute
 
 
 @dataclass
@@ -27,6 +28,11 @@ class Repeat:
   repeat_cnt: int
   stmts: list[stmt]
 
+@dataclass
+class Execute:
+  exec_args: list[ExecArg]
+  stmts: list[stmt]
+
 
 @dataclass
 class If:
@@ -41,3 +47,24 @@ class Elif:
 @dataclass
 class Else:
   stmts: list[stmt]
+
+@dataclass
+class ExecArg:
+  cmd: Literal[
+    "align",
+    "anchored",
+    "as",
+    "at",
+    "facing",
+    "facing_entity",
+    "in",
+    "on",
+    "pos",
+    "pos_as",
+    "pos_over",
+    "rotated",
+    "rotated_as",
+    "summon",
+  ]
+
+  args: list[Any]
