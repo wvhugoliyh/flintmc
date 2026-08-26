@@ -60,6 +60,12 @@ class FlintParser(Transformer):
   def repeat(self, children):
     return Repeat(children[0], children[1::])
 
+  def execute(self, children):
+    return Execute(
+      filter_by_type(children[::], ExecArg),
+      filter_by_type(children[::], stmt)
+    )
+
   
   def if_stmt(self, children):
     return If(children[0], children[1::])
@@ -69,6 +75,49 @@ class FlintParser(Transformer):
 
   def else_stmt(self, children):
     return Else(children[::])
+
+
+  def exec_align(self, children):
+    return ExecArg("align", children)
+
+  def exec_anchored(self, children):
+    return ExecArg("anchored", children)
+
+  def exec_as(self, children):
+    return ExecArg("as", children)
+
+  def exec_at(self, children):
+    return ExecArg("at", children)
+
+  def exec_facing(self, children):
+    return ExecArg("facing", children)
+
+  def exec_facing_entity(self, children):
+    return ExecArg("facing_entity", children)
+
+  def exec_in(self, children):
+    return ExecArg("in", children)
+
+  def exec_on(self, children):
+    return ExecArg("on", children)
+
+  def exec_pos(self, children):
+    return ExecArg("pos", children)
+
+  def exec_pos_as(self, children):
+    return ExecArg("pos_as", children)
+
+  def exec_pos_over(self, children):
+    return ExecArg("pos_over", children)
+
+  def exec_rotated(self, children):
+    return ExecArg("rotated", children)
+
+  def exec_rotated_as(self, children):
+    return ExecArg("rotated_as", children)
+
+  def exec_summon(self, children):
+    return ExecArg("summon", children)
 
   
   def expr(self, children):
