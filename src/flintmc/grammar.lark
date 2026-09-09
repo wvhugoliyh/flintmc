@@ -81,6 +81,7 @@ ID: /[a-zA-Z_][a-zA-Z0-9_]*/
 
 ENTITY_SEL: /@[spnr]/
 
+// Execute arguments
 AXES: /(?!.*(.).*\1)[xyz]+/
 
 ANCHOR: /eyes|feet/
@@ -88,6 +89,7 @@ ANCHOR: /eyes|feet/
 RELATION: /attacker|controller|leasher|origin|owner|passengers|target|vehicle/
 
 HEIGHTMAP: /world_surface|motion_blocking|motion_blocking_no_leaves|ocean_floor/
+
 // Data types
 INT: /[0-9]+/
 
