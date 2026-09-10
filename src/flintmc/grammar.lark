@@ -1,7 +1,7 @@
 // Templates / macros
 _items{item, separator}: item (separator item)*
 
-_block: "{" stmt* "}"
+_block: "{" stmt* "}" | stmt
 
 _coord: DOUBLE ~ 3
 
