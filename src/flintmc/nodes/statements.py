@@ -4,7 +4,7 @@ from typing import Any
 from flintmc.nodes.expression import numeric_value, boolean_value
 
 # Type aliases are used to reduce repetitive code
-type stmt = Assignment | FuncCall | Conditional | Repeat | Execute
+type stmt = Assignment | FuncCall | Conditional | Repeat | Execute | Run
 
 
 @dataclass
