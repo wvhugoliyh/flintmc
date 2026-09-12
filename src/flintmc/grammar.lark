@@ -6,7 +6,7 @@ _block: "{" stmt* "}" | stmt
 _coord: DOUBLE ~ 3
 
 _angle: DOUBLE ~ 2
-aabb
+
 // Top level
 start: definition*
 
