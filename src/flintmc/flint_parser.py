@@ -71,7 +71,7 @@ class FlintParser(Transformer):
     )
 
   def run(self, children):
-    return str(children[0])
+    return Run(children[0])
   
   
   def if_stmt(self, children):
@@ -163,6 +163,9 @@ class FlintParser(Transformer):
     return str(token)
 
   def ENTITY_SEL(self, token):
+    return str(token)
+    
+  def RAW(self, token):
     return str(token)
     
   def INT(self, token):
