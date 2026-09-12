@@ -19,7 +19,7 @@ stmt: ID "=" expr ";"                         -> assignment
     | if_stmt elif_stmt* else_stmt?           -> conditional
     | "repeat" INT _block                     -> repeat
     | "execute" _items{exec_arg, ","} _block  -> execute
-    | "run" RAW                               -> run
+    | "run" RAW ";"                           -> run
 
 // Parts of a statements
 if_stmt: "if" "(" disjunction ")" _block
