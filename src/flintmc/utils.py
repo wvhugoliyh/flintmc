@@ -11,4 +11,4 @@ def filter_by_type(objs: list, type: type | TypeAliasType):
     return list(filter(type.__instancecheck__, objs))
 
   except AttributeError:
-    return list(filter(lambda obj: isinstance(type.__value__, obj), objs))
+    return list(filter(lambda obj: isinstance(obj, type.__value__), objs))
