@@ -33,6 +33,10 @@ class Execute:
   exec_args: list[ExecArg]
   stmts: list[stmt]
 
+@dataclass
+class Run:
+  raw: str
+
 
 @dataclass
 class If:

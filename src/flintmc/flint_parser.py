@@ -12,6 +12,10 @@ from flintmc.nodes.statements import (
   FuncCall,
   Repeat,
   Execute,
+  Run,
+  If,
+  Elif,
+  Else,
   ExecArg,
 )
 
@@ -66,6 +70,9 @@ class FlintParser(Transformer):
       filter_by_type(children[::], stmt)
     )
 
+  def run(self, children):
+    return str(children[0])
+  
   
   def if_stmt(self, children):
     return If(children[0], children[1::])

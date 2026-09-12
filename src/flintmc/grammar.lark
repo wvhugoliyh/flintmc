@@ -6,7 +6,7 @@ _block: "{" stmt* "}" | stmt
 _coord: DOUBLE ~ 3
 
 _angle: DOUBLE ~ 2
-
+aabb
 // Top level
 start: definition*
 
@@ -19,6 +19,7 @@ stmt: ID "=" expr ";"                         -> assignment
     | if_stmt elif_stmt* else_stmt?           -> conditional
     | "repeat" INT _block                     -> repeat
     | "execute" _items{exec_arg, ","} _block  -> execute
+    | "run" RAW                               -> run
 
 // Parts of a statements
 if_stmt: "if" "(" disjunction ")" _block
@@ -80,6 +81,8 @@ comparison: expr COMPARATOR expr
 ID: /[a-zA-Z_][a-zA-Z0-9_]*/
 
 ENTITY_SEL: /@[spnr]/
+
+RAW.-1: /[^;]+/
 
 // Execute arguments
 AXES: /(?!.*(.).*\1)[xyz]+/
