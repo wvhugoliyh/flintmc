@@ -1,7 +1,6 @@
-""""""
 from typing import TypeAliasType
 
-def filter_by_type(objs: list, type: type | TypeAliasType):
+def filter_by_type(objs: list, type: type | TypeAliasType) -> list:
   """ Filters a list by type. Supports filter by type alias.
 
   Instance of a subclass is considered instance of the base class.
