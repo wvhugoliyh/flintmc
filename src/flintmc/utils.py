@@ -1,13 +1,6 @@
 from typing import TypeAliasType
 
-def filter_by_type(objs: list, type: type | TypeAliasType) -> list:
-  """ Filters a list by type. Supports filter by type alias.
+def filter_by_type(objs: list, type: type) -> list:
+  """ Filters a list by type. """
 
-  Instance of a subclass is considered instance of the base class.
-  """
-
-  try:
-    return list(filter(type.__instancecheck__, objs))
-
-  except AttributeError:
-    return list(filter(lambda obj: isinstance(obj, type.__value__), objs))
+  return [obj for obj in objs if isinstance(obj, type)]

@@ -40,7 +40,7 @@ class FlintParser(Transformer):
     return FuncDef(
       children[0],
       filter_by_type(children[1::], str),
-      filter_by_type(children[1::], stmt)
+      filter_by_type(children[1::], stmt.__value__)
     )
 
   def tick_def(self, children: list) -> TickDef:
@@ -69,7 +69,7 @@ class FlintParser(Transformer):
   def execute(self, children: list) -> Execute:
     return Execute(
       filter_by_type(children[::], ExecArg),
-      filter_by_type(children[::], stmt)
+      filter_by_type(children[::], stmt.__value__)
     )
 
   def run(self, children: list) -> Run:
