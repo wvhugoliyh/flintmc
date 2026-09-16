@@ -9,12 +9,12 @@ type stmtT = Assignment | FuncCall | Conditional | Repeat | Execute | Run
 
 @dataclass
 class Assignment:
-  var_id: str
+  id: str
   value: numeric_value
 
 @dataclass
 class FuncCall:
-  func_id: str
+  id: str
   args: list[numeric_value]
 
 @dataclass

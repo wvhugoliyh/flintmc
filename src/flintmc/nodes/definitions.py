@@ -6,16 +6,16 @@ type definitionT = FuncDef | TickDef | LoadDef
 
 @dataclass
 class FuncDef:
-  func_id: str
+  id: str
   params: list[str]
   stmts: list[stmtT]
 
 @dataclass
 class TickDef:
-  tick_id: str
+  id: str
   stmts: list[stmtT]
 
 @dataclass
 class LoadDef:
-  load_id: str
+  id: str
   stmts: list[stmtT]
