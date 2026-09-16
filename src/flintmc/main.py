@@ -6,6 +6,7 @@ import typer
 from lark import Lark
 
 from flintmc.flint_parser import FlintParser
+from flintmc.sort_ast import sort_ast
 
 app = typer.Typer()
 
@@ -13,4 +14,5 @@ app = typer.Typer()
 def main(source_path: str, dest_path: str) -> None:
   parser = Lark.open("grammar.lark", rel_to=__file__, parser="lalr", transformer=FlintParser())
   source_path_obj = Path(source_path).resolve()
-  print(parser.parse(source_path_obj.read_text()))
+  ast = parser.parse(source_path_obj.read_text())
+  print(sort_ast(ast))
