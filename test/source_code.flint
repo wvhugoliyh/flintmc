@@ -1,6 +1,7 @@
 def func broadcast(text) {
   run $tellraw @a "$(text)";
 }
+
 def load main_load {
   a = 1;
   b = 1;
@@ -8,13 +9,15 @@ def load main_load {
 }
 
 def tick main_tick {
-  // Every tick, calculate the next 3 term of the Fibbonacci sequence
-  a = b + c;
-  b = a + c;
-  c = a + b;
+  /* Every tick, calculate the next 9 term of the Fibbonacci
+  sequence and broadcast it */
+  repeat 3 {
+    a = b + c;
+    b = a + c;
+    c = a + b;
 
-  // Broadcast the 3 terms to everyone
-  broadcast(a);
-  broadcast(b);
-  broadcast(c);
+    broadcast(a);
+    broadcast(b);
+    broadcast(c);
+  }
 }
