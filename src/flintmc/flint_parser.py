@@ -10,6 +10,7 @@ from flintmc.nodes.statements import (
   stmtT,
   Assignment,
   FuncCall,
+  Conditional,
   Repeat,
   Execute,
   Run,
