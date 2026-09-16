@@ -86,10 +86,11 @@ def sort_ast(ast: list, /, *, namespace: str = "minecraft") -> dict:
   flat_dir_tree = {}
   
   for definition in ast:
-    flat_dir_tree[Path(f"data/{namespace}/function/{definition.id}.mcfunction")] = definition.stmts
     recursive_sort(
       flat_dir_tree,
       definition.stmts,
       id=definition.id,
       path=Path(f"data/{namespace}/function")
     )
+
+  return flat_dir_tree
