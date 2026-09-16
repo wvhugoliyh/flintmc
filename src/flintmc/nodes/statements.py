@@ -4,7 +4,7 @@ from typing import Any
 from flintmc.nodes.expression import numeric_value, boolean_value
 
 # Type aliases are used to reduce repetitive code
-type stmt = Assignment | FuncCall | Conditional | Repeat | Execute | Run
+type stmtT = Assignment | FuncCall | Conditional | Repeat | Execute | Run
 
 
 @dataclass
@@ -26,12 +26,12 @@ class Conditional:
 @dataclass
 class Repeat:
   repeat_cnt: int
-  stmts: list[stmt]
+  stmts: list[stmtT]
 
 @dataclass
 class Execute:
   exec_args: list[ExecArg]
-  stmts: list[stmt]
+  stmts: list[stmtT]
 
 @dataclass
 class Run:
@@ -41,16 +41,16 @@ class Run:
 @dataclass
 class If:
   condition: boolean_value
-  stmts: list[stmt]
+  stmts: list[stmtT]
 
 @dataclass
 class Elif:
   condition: boolean_value
-  stmts: list[stmt]
+  stmts: list[stmtT]
 
 @dataclass
 class Else:
-  stmts: list[stmt]
+  stmts: list[stmtT]
 
 @dataclass
 class ExecArg:
