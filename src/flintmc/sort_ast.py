@@ -71,7 +71,7 @@ def sort_ast(ast: list, /, *, namespace: str = "minecraft") -> dict:
     flat_dir_tree[path / f"{id}.mcfunction"] = stmts
 
     for statement in stmts:
-      for file_name, file_content in sort_stmts(stmts):
+      for file_name, file_content in sort_stmts(stmts).items():
         flat_dir_tree.update({
           path / f"{id}-subfuncs" / file_name: file_content
         })
