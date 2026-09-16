@@ -1,4 +1,5 @@
-from pathlib import Path, Any
+from pathlib import Path
+from typing import Any
 
 from flintmc.nodes.definitions import (
   definitionT,
