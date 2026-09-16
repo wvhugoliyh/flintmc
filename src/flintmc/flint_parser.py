@@ -7,9 +7,10 @@ from flintmc.nodes.definitions import (
 )
 
 from flintmc.nodes.statements import (
-  stmt,
+  stmtT,
   Assignment,
   FuncCall,
+  Conditional,
   Repeat,
   Execute,
   Run,
@@ -33,14 +34,14 @@ from flintmc.utils import filter_by_type
 class FlintParser(Transformer):
   """ The parser used to generate an AST from flint code. """
 
-  def start(self, children: list) -> list[stmt]:
+  def start(self, children: list) -> list[stmtT]:
     return children
 
   def func_def(self, children: list) -> FuncDef:
     return FuncDef(
       children[0],
       filter_by_type(children[1::], str),
-      filter_by_type(children[1::], stmt)
+      filter_by_type(children[1::], stmtT.__value__)
     )
 
   def tick_def(self, children: list) -> TickDef:
@@ -69,7 +70,7 @@ class FlintParser(Transformer):
   def execute(self, children: list) -> Execute:
     return Execute(
       filter_by_type(children[::], ExecArg),
-      filter_by_type(children[::], stmt)
+      filter_by_type(children[::], stmtT.__value__)
     )
 
   def run(self, children: list) -> Run:
