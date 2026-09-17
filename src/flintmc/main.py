@@ -6,7 +6,7 @@ import typer
 from lark import Lark
 
 from flintmc.flint_parser import FlintParser
-from flintmc.sort_ast import sort_ast
+from flintmc.generate_dir_structure import generate_dir_structure
 
 app = typer.Typer()
 
@@ -21,4 +21,4 @@ def main(source_path: str, dest_path: str) -> None:
 
   source_path_obj = Path(source_path).resolve()
   ast = parser.parse(source_path_obj.read_text())
-  print(sort_ast(ast, namespace="test"))
+  print(generate_dir_structure(ast, namespace="test"))
