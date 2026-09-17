@@ -21,4 +21,4 @@ def main(source_path: str, dest_path: str) -> None:
 
   source_path_obj = Path(source_path).resolve()
   ast = parser.parse(source_path_obj.read_text())
-  print(sort_ast(ast, namespace="test"))
+  print(generate_dir_structure(ast, namespace="test"))

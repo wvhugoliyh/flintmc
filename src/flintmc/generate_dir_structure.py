@@ -34,7 +34,7 @@ from flintmc.nodes.expression import (
 
 from flintmc.utils import filter_by_type
 
-def sort_ast(ast: list, /, *, namespace: str = "minecraft") -> dict:
+def generate_dir_structure(ast: list, /, *, namespace: str = "minecraft") -> dict:
   """ Takes the AST and sorts the nodes into multiple files. """
 
   def sort_stmts(stmts: list[stmtT], /) -> dict:
