@@ -84,8 +84,17 @@ def sort_ast(ast: list, /, *, namespace: str = "minecraft") -> dict:
         )
 
   flat_dir_tree = {}
-  
+
+  tick_defs = []
+  load_defs = []
+
   for definition in ast:
+    if isinstance(definition, TickDef):
+      tick_defs.append(definition.id)
+
+    if isinstance(definition, LoadDef):
+      load_defs.append(definition.id)
+
     recursive_sort(
       flat_dir_tree,
       definition.stmts,
@@ -93,4 +102,6 @@ def sort_ast(ast: list, /, *, namespace: str = "minecraft") -> dict:
       path=Path(f"data/{namespace}/function")
     )
 
+  flat_dir_tree[Path("data/minecraft/tags/function/tick.json")] = '{"value":' + str(tick_defs) + '}'
+  flat_dir_tree[Path("data/minecraft/tags/function/load.json")] = '{"value":' + str(load_defs) + '}'
   return flat_dir_tree
