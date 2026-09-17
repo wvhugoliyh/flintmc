@@ -89,6 +89,80 @@ def sort_ast(ast: list, /, *, namespace: str = "minecraft") -> dict:
   tick_defs = []
   load_defs = []
 
+  flat_dir_tree[Path("data/math/context_float_provider/add.json")] = json.dumps({
+    "type": "add",
+    "inputs": [
+      {
+        "type": "storage",
+        "storage": "math:temp_vars",
+        "path": "input_1"
+      },
+      {
+        "type": "storage",
+        "storage": "math:temp_vars",
+        "path": "input_2"
+      }
+    ]
+  })
+
+  flat_dir_tree[Path("data/math/context_float_provider/sub.json")] = json.dumps({
+    "type": "sub",
+    "left": {
+      "type": "storage",
+      "storage": "math:temp_vars",
+      "path": "input_1"
+    },
+    "right": {
+      "type": "storage",
+      "storage": "math:temp_vars",
+      "path": "input_2"
+    }
+  })
+
+  flat_dir_tree[Path("data/math/context_float_provider/mul.json")] = json.dumps({
+    "type": "mul",
+    "inputs": [
+      {
+        "type": "storage",
+        "storage": "math:temp_vars",
+        "path": "input_1"
+      },
+      {
+        "type": "storage",
+        "storage": "math:temp_vars",
+        "path": "input_2"
+      }
+    ]
+  })
+
+  flat_dir_tree[Path("data/math/context_float_provider/div.json")] = json.dumps({
+    "type": "div",
+    "left": {
+      "type": "storage",
+      "storage": "math:temp_vars",
+      "path": "input_1"
+    },
+    "right": {
+      "type": "storage",
+      "storage": "math:temp_vars",
+      "path": "input_2"
+    }
+  })
+
+  flat_dir_tree[Path("data/math/context_float_provider/pow.json")] = json.dumps({
+    "type": "pow",
+    "base": {
+      "type": "storage",
+      "storage": "math:temp_vars",
+      "path": "input_1"
+    },
+    "exponent": {
+      "type": "storage",
+      "storage": "math:temp_vars",
+      "path": "input_2"
+    }
+  })
+
   for definition in ast:
     if isinstance(definition, TickDef):
       tick_defs.append(definition.id)
@@ -106,7 +180,7 @@ def sort_ast(ast: list, /, *, namespace: str = "minecraft") -> dict:
   flat_dir_tree[Path("data/minecraft/tags/function/tick.json")] = json.dumps({
     "values": tick_defs
   })
-  
+
   flat_dir_tree[Path("data/minecraft/tags/function/load.json")] = json.dumps({
     "values": load_defs
   })
