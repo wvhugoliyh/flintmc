@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import Any
+import json
 
 from flintmc.nodes.definitions import (
   definitionT,
@@ -101,7 +102,13 @@ def sort_ast(ast: list, /, *, namespace: str = "minecraft") -> dict:
       id=definition.id,
       path=Path(f"data/{namespace}/function")
     )
+    
+  flat_dir_tree[Path("data/minecraft/tags/function/tick.json")] = json.dumps({
+    "values": tick_defs
+  })
+  
+  flat_dir_tree[Path("data/minecraft/tags/function/load.json")] = json.dumps({
+    "values": load_defs
+  })
 
-  flat_dir_tree[Path("data/minecraft/tags/function/tick.json")] = '{"value":' + str(tick_defs) + '}'
-  flat_dir_tree[Path("data/minecraft/tags/function/load.json")] = '{"value":' + str(load_defs) + '}'
   return flat_dir_tree
