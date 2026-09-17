@@ -6,7 +6,7 @@ import typer
 from lark import Lark
 
 from flintmc.flint_parser import FlintParser
-from flintmc.sort_ast import sort_ast
+from flintmc.generate_dir_structure import generate_dir_structure
 
 app = typer.Typer()
 
