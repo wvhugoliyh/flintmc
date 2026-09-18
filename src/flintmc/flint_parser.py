@@ -162,6 +162,12 @@ class FlintParser(Transformer):
     return Comparison(children[0], children[1], children[2])
 
 
+  def USERNAME(self, token: Token) -> str:
+    return str(token)
+
+  def UUID(self, token: Token) -> str:
+    return str(token)
+
   def ID(self, token: Token) -> str:
     return str(token)
 

@@ -34,5 +34,5 @@ class Comparison:
 
 @dataclass
 class EntityProp:
-  entity_sel: Literal["@s", "@p", "@n", "r"]
+  entity_sel: str
   nbt_path_comps: list[str]
