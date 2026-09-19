@@ -34,7 +34,7 @@ from flintmc.utils import filter_by_type
 class FlintParser(Transformer):
   """ The parser used to generate an AST from flint code. """
 
-  def start(self, children: list) -> list[stmtT]:
+  def start(self, children: list) -> list:
     return children
 
   def func_def(self, children: list) -> FuncDef:

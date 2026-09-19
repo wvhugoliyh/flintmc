@@ -34,7 +34,7 @@ from flintmc.nodes.expression import (
 
 from flintmc.utils import filter_by_type
 
-def generate_dir_structure(ast: list, /, *, namespace: str = "minecraft") -> dict:
+def generate_files(ast: list, /, *, namespace: str = "minecraft") -> dict:
   """ Takes the AST and sorts the nodes into multiple files. """
 
   def sort_stmts(stmts: list[stmtT], /) -> dict:
@@ -58,10 +58,11 @@ def generate_dir_structure(ast: list, /, *, namespace: str = "minecraft") -> dic
 
     for i, repeat in enumerate(repeats):
       file_map[Path(f"repeat-{i}")] = repeat.stmts
+
     return file_map
 
   def recursive_sort(
-    flat_dir_tree: dict[Path, definitionT | stmtT],
+    dir_struct: dict[Path, definitionT | stmtT],
     stmts: list[stmtT],
     /,
     id: str,
@@ -69,27 +70,27 @@ def generate_dir_structure(ast: list, /, *, namespace: str = "minecraft") -> dic
     path: Path
   ):
 
-    flat_dir_tree[path / f"{id}.mcfunction"] = stmts
+    dir_struct[path / f"{id}.mcfunction"] = stmts
 
     for statement in stmts:
       for file_name, file_content in sort_stmts(stmts).items():
-        flat_dir_tree.update({
+        dir_struct.update({
           path / f"{id}-subfuncs" / file_name: file_content
         })
 
         recursive_sort(
-          flat_dir_tree,
+          dir_struct,
           file_content, 
           id=file_name,
           path=path / f"{id}-subfuncs"
         )
 
-  flat_dir_tree = {}
+  dir_struct: dict[Path, str | stmtT] = {}
 
-  tick_defs = []
-  load_defs = []
+  tick_ids: list[str] = []
+  load_ids: list[str] = []
 
-  flat_dir_tree[Path("data/math/context_float_provider/add.json")] = json.dumps({
+  dir_struct[Path("data/math/context_float_provider/add.json")] = json.dumps({
     "type": "add",
     "inputs": [
       {
@@ -105,7 +106,7 @@ def generate_dir_structure(ast: list, /, *, namespace: str = "minecraft") -> dic
     ]
   })
 
-  flat_dir_tree[Path("data/math/context_float_provider/sub.json")] = json.dumps({
+  dir_struct[Path("data/math/context_float_provider/sub.json")] = json.dumps({
     "type": "sub",
     "left": {
       "type": "storage",
@@ -119,7 +120,7 @@ def generate_dir_structure(ast: list, /, *, namespace: str = "minecraft") -> dic
     }
   })
 
-  flat_dir_tree[Path("data/math/context_float_provider/mul.json")] = json.dumps({
+  dir_struct[Path("data/math/context_float_provider/mul.json")] = json.dumps({
     "type": "mul",
     "inputs": [
       {
@@ -135,7 +136,7 @@ def generate_dir_structure(ast: list, /, *, namespace: str = "minecraft") -> dic
     ]
   })
 
-  flat_dir_tree[Path("data/math/context_float_provider/div.json")] = json.dumps({
+  dir_struct[Path("data/math/context_float_provider/div.json")] = json.dumps({
     "type": "div",
     "left": {
       "type": "storage",
@@ -149,7 +150,7 @@ def generate_dir_structure(ast: list, /, *, namespace: str = "minecraft") -> dic
     }
   })
 
-  flat_dir_tree[Path("data/math/context_float_provider/pow.json")] = json.dumps({
+  dir_struct[Path("data/math/context_float_provider/pow.json")] = json.dumps({
     "type": "pow",
     "base": {
       "type": "storage",
@@ -165,24 +166,24 @@ def generate_dir_structure(ast: list, /, *, namespace: str = "minecraft") -> dic
 
   for definition in ast:
     if isinstance(definition, TickDef):
-      tick_defs.append(definition.id)
+      tick_ids.append(definition.id)
 
     if isinstance(definition, LoadDef):
-      load_defs.append(definition.id)
+      load_ids.append(definition.id)
 
     recursive_sort(
-      flat_dir_tree,
+      dir_struct,
       definition.stmts,
       id=definition.id,
       path=Path(f"data/{namespace}/function")
     )
     
-  flat_dir_tree[Path("data/minecraft/tags/function/tick.json")] = json.dumps({
-    "values": tick_defs
+  dir_struct[Path("data/minecraft/tags/function/tick.json")] = json.dumps({
+    "values": tick_ids
   })
 
-  flat_dir_tree[Path("data/minecraft/tags/function/load.json")] = json.dumps({
-    "values": load_defs
+  dir_struct[Path("data/minecraft/tags/function/load.json")] = json.dumps({
+    "values": load_ids
   })
 
-  return flat_dir_tree
+  return dir_struct

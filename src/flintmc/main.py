@@ -2,13 +2,13 @@
 
 from pathlib import Path
 
-import typer
+from typer import Typer
 from lark import Lark
 
 from flintmc.flint_parser import FlintParser
-from flintmc.generate_dir_structure import generate_dir_structure
+from flintmc.generate_files import generate_files
 
-app = typer.Typer()
+app = Typer()
 
 @app.command()
 def main(source_path: str, dest_path: str) -> None:
@@ -21,4 +21,4 @@ def main(source_path: str, dest_path: str) -> None:
 
   source_path_obj = Path(source_path).resolve()
   ast = parser.parse(source_path_obj.read_text())
-  print(generate_dir_structure(ast, namespace="test"))
+  print(generate_files(ast, namespace="test"))
