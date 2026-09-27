@@ -27,12 +27,10 @@ from flintmc.nodes.expression import (
   LogicNot,
   Comparison,
   EntityProp,
-)
-
-from flintmc.utils import filter_by_type
+) 
 
 class FlintParser(Transformer):
-  """ The parser used to generate an AST from flint code. """
+  """The parser used to generate an AST from flint code."""
 
   def start(self, children: list) -> list:
     return children
@@ -40,8 +38,11 @@ class FlintParser(Transformer):
   def func_def(self, children: list) -> FuncDef:
     return FuncDef(
       children[0],
-      filter_by_type(children[1::], str),
-      filter_by_type(children[1::], stmtT.__value__)
+      [child for child in children[1::] if isinstance(child, str)],
+      [
+        child for child in children[1::]
+        if isinstance(child, stmtT.__value__)
+      ]
     )
 
   def tick_def(self, children: list) -> TickDef:
@@ -60,7 +61,7 @@ class FlintParser(Transformer):
   def conditional(self, children: list) -> Conditional:
     return Conditional(
       children[0],
-      filter_by_type(children[1::], Elif),
+      [child for child in children[1::] if isinstance(child, Elif)],
       children[-1] if isinstance(children[-1], Else) else None
     )
 
@@ -69,8 +70,11 @@ class FlintParser(Transformer):
 
   def execute(self, children: list) -> Execute:
     return Execute(
-      filter_by_type(children[::], ExecArg),
-      filter_by_type(children[::], stmtT.__value__)
+      [child for child in children[::] if isinstance(child, ExecArg)],
+      [
+        child for child in children[::]
+        if isinstance(child, stmtT.__value__)
+      ]
     )
 
   def run(self, children: list) -> Run:
