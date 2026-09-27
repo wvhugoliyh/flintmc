@@ -11,86 +11,98 @@ from flintmc.nodes.definitions import (
 
 from flintmc.nodes.statements import (
   stmtT,
-  Assignment,
-  FuncCall,
   Conditional,
   Repeat,
   Execute,
-  Run,
-  If,
-  Elif,
-  Else,
-  ExecArg,
-)
-
-from flintmc.nodes.expression import (
-  MathBinaryOp,
-  MathNeg,
-  LogicBinaryOp,
-  LogicNot,
-  Comparison,
-  EntityProp,
 )
 
 from flintmc.utils import filter_by_type
 
-def generate_files(ast: list, /, *, namespace: str = "minecraft") -> dict:
-  """ Takes the AST and sorts the nodes into multiple files. """
+def generate_files(
+  ast: list[definitionT],
+  namespace: str = "minecraft",
+  /
+) -> dict:
 
-  def sort_stmts(stmts: list[stmtT], /) -> dict:
-    file_map: dict[Path, Any] = {}
+  """ Takes the AST and sorts the nodes into multiple files. Also
+  returns lists of definitions.
+  """
 
-    conditionals = filter_by_type(stmts, Conditional)
-    executes = filter_by_type(stmts, Execute)
-    repeats = filter_by_type(stmts, Repeat)
-
-    for i, conditional in enumerate(conditionals):
-      file_map[Path(f"if-{i}")] = conditional.if_stmt.stmts
-    
-      for j, elif_stmt in enumerate(conditional.elif_stmts):
-        file_map[Path(f"elif-{i}-{j}")] = elif_stmt.stmts
-
-      if conditional.else_stmt:
-        file_map[Path(f"else-{i}")] = else_stmt.stmts
-
-    for i, execute in enumerate(executes):
-      file_map[Path(f"exec-{i}")] = execute.stmts
-
-    for i, repeat in enumerate(repeats):
-      file_map[Path(f"repeat-{i}")] = repeat.stmts
-
-    return file_map
-
-  def recursive_sort(
-    dir_struct: dict[Path, definitionT | stmtT],
+  def generate_subfuncs(
     stmts: list[stmtT],
-    /,
+    path: Path,
+    /
+  ) -> dict[Path, list[stmtT]]:
+
+    subfuncs: dict[Path, list[stmtT]] = {}
+
+    for stmt_idx, stmt in enumerate(stmts):
+      if isinstance(stmt, Conditional):
+        subfuncs[path / f"if-{stmt_idx}"] = stmt.if_stmt.stmts
+ 
+        for elif_idx, elif_stmt in enumerate(stmt.elif_stmts):
+          subfuncs[path / f"elif-{stmt_idx}-{elif_idx}"] = elif_stmt.stmts
+
+        if stmt.else_stmt:
+          subfuncs[path / f"else-{stmt_idx}"] = stmt.else_stmt.stmts
+
+      elif isinstance(stmt, Execute):
+        subfuncs[path / f"execute-{stmt_idx}"] = stmt.stmts
+
+      elif isinstance(stmt, Repeat):
+        subfuncs[path / f"repeat-{stmt_idx}"] = stmt.stmts
+
+    return subfuncs
+
+  def construct_funcs(
+    dir_struct: dict[Path, str | list[stmtT]],
+    stmts: list[stmtT],
     id: str,
-    *,
-    path: Path
+    path: Path,
+    /
   ):
 
+    # Add the function to dir_struct
     dir_struct[path / f"{id}.mcfunction"] = stmts
 
-    for statement in stmts:
-      for file_name, file_content in sort_stmts(stmts).items():
-        dir_struct.update({
-          path / f"{id}-subfuncs" / file_name: file_content
-        })
+    subfuncs = generate_subfuncs(stmts, path / f"{id}_subfuncs")
 
-        recursive_sort(
-          dir_struct,
-          file_content, 
-          id=file_name,
-          path=path / f"{id}-subfuncs"
-        )
+    # Add the subfunctions to dir_struct
+    dir_struct.update(subfuncs)
 
-  dir_struct: dict[Path, str | stmtT] = {}
+    for path, subfunc_stmts in subfuncs.items():
 
-  tick_ids: list[str] = []
-  load_ids: list[str] = []
+      # For every compound statement in the subfunction, set the path
+      # property to its path
+      for subfunc_stmt in subfunc_stmts:
+        if isinstance(subfunc_stmt, (Conditional, Execute, Repeat)):
+          subfunc_stmts.path = path
 
-  dir_struct[Path("data/math/context_float_provider/add.json")] = json.dumps({
+      construct_funcs(
+        dir_struct,
+        subfunc_stmts, 
+        path,
+        path / f"{id}-subfuncs"
+      )
+
+  dir_struct: dict[Path, str | list[stmtT]] = {}
+
+  func_defs: list[FuncDef] = filter_by_type(ast, FuncDef)
+  tick_defs: list[TickDef] = filter_by_type(ast, TickDef)
+  load_defs: list[TickDef] = filter_by_type(ast, LoadDef)
+
+  math_float_provider_path = Path("data", "math", "context_float_provider")
+  function_tags_path = Path("data", "minecraft", "tags", "function")
+
+  dir_struct[Path("pack.mcmeta")] = json.dumps({
+    "pack": {
+      "description": "",
+      "min_format": 121,
+      "max_format": 999
+    }
+  })
+
+  dir_struct[math_float_provider_path / "add.json"] = json.dumps({
     "type": "add",
     "inputs": [
       {
@@ -106,7 +118,7 @@ def generate_files(ast: list, /, *, namespace: str = "minecraft") -> dict:
     ]
   })
 
-  dir_struct[Path("data/math/context_float_provider/sub.json")] = json.dumps({
+  dir_struct[math_float_provider_path / "sub.json"] = json.dumps({
     "type": "sub",
     "left": {
       "type": "storage",
@@ -120,7 +132,7 @@ def generate_files(ast: list, /, *, namespace: str = "minecraft") -> dict:
     }
   })
 
-  dir_struct[Path("data/math/context_float_provider/mul.json")] = json.dumps({
+  dir_struct[math_float_provider_path / "mul.json"] = json.dumps({
     "type": "mul",
     "inputs": [
       {
@@ -136,7 +148,7 @@ def generate_files(ast: list, /, *, namespace: str = "minecraft") -> dict:
     ]
   })
 
-  dir_struct[Path("data/math/context_float_provider/div.json")] = json.dumps({
+  dir_struct[math_float_provider_path / "div.json"] = json.dumps({
     "type": "div",
     "left": {
       "type": "storage",
@@ -150,7 +162,7 @@ def generate_files(ast: list, /, *, namespace: str = "minecraft") -> dict:
     }
   })
 
-  dir_struct[Path("data/math/context_float_provider/pow.json")] = json.dumps({
+  dir_struct[math_float_provider_path / "pow.json"] = json.dumps({
     "type": "pow",
     "base": {
       "type": "storage",
@@ -165,25 +177,24 @@ def generate_files(ast: list, /, *, namespace: str = "minecraft") -> dict:
   })
 
   for definition in ast:
-    if isinstance(definition, TickDef):
-      tick_ids.append(definition.id)
-
-    if isinstance(definition, LoadDef):
-      load_ids.append(definition.id)
-
-    recursive_sort(
+    construct_funcs(
       dir_struct,
       definition.stmts,
-      id=definition.id,
-      path=Path(f"data/{namespace}/function")
+      definition.id,
+      Path("data", namespace, "function")
     )
     
-  dir_struct[Path("data/minecraft/tags/function/tick.json")] = json.dumps({
-    "values": tick_ids
+  dir_struct[function_tags_path / "tick.json"] = json.dumps({
+    "values": [f"{namespace}:{tick_def.id}" for tick_def in tick_defs]
   })
 
-  dir_struct[Path("data/minecraft/tags/function/load.json")] = json.dumps({
-    "values": load_ids
+  dir_struct[function_tags_path / "load.json"] = json.dumps({
+    "values": [f"{namespace}:{load_def.id}" for load_def in load_defs]
   })
 
-  return dir_struct
+  return {
+    "dir_struct": dir_struct,
+    "func_defs": func_defs,
+    "tick_defs": tick_defs,
+    "load_defs": load_defs
+  }
