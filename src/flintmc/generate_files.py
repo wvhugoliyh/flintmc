@@ -16,16 +16,14 @@ from flintmc.nodes.statements import (
   Execute,
 )
 
-from flintmc.utils import filter_by_type
-
 def generate_files(
   ast: list[definitionT],
   namespace: str = "minecraft",
   /
 ) -> dict:
 
-  """ Takes the AST and sorts the nodes into multiple files. Also
-  returns lists of definitions.
+  """Takes the AST and sorts the nodes into multiple files. Also
+  returns 3 lists of definitions, one for each type.
   """
 
   def generate_subfuncs(
@@ -87,9 +85,20 @@ def generate_files(
 
   dir_struct: dict[Path, str | list[stmtT]] = {}
 
-  func_defs: list[FuncDef] = filter_by_type(ast, FuncDef)
-  tick_defs: list[TickDef] = filter_by_type(ast, TickDef)
-  load_defs: list[TickDef] = filter_by_type(ast, LoadDef)
+  func_defs = [
+    definition for definition in ast
+    if isinstance(definition, FuncDef)
+  ]
+
+  tick_defs = [
+    definition for definition in ast
+    if isinstance(definition, TickDef)
+  ]
+
+  load_defs = [
+    definition for definition in ast
+    if isinstance(definition, LoadDef)
+  ]
 
   math_float_provider_path = Path("data", "math", "context_float_provider")
   function_tags_path = Path("data", "minecraft", "tags", "function")

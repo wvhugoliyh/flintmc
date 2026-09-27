@@ -1,4 +1,4 @@
-""" A tool to transpile Flint code into Minecraft datapacks. """
+"""A tool to transpile Flint code into Minecraft datapacks."""
 
 from pathlib import Path
 
