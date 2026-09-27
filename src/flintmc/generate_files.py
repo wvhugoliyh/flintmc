@@ -47,10 +47,10 @@ def generate_files(
           subfuncs[path / f"else-{stmt_idx}"] = stmt.else_stmt.stmts
 
       elif isinstance(stmt, Execute):
-        subfuncs[path / f"execute-{execute_count}"] = stmt.stmts
+        subfuncs[path / f"execute-{stmt_idx}"] = stmt.stmts
 
       elif isinstance(stmt, Repeat):
-        subfuncs[path / f"repeat-{repeat_count}"] = stmt.stmts
+        subfuncs[path / f"repeat-{stmt_idx}"] = stmt.stmts
 
     return subfuncs
 
