@@ -193,8 +193,8 @@ def generate_files(
   })
 
   return {
-    dir_struct: dir_struct,
-    func_defs: func_defs,
-    tick_defs: tick_defs,
-    load_defs: load_defs
+    "dir_struct": dir_struct,
+    "func_defs": func_defs,
+    "tick_defs": tick_defs,
+    "load_defs": load_defs
   }
