@@ -21,4 +21,4 @@ def main(source_path: str, dest_path: str) -> None:
 
   source_path_obj = Path(source_path).resolve()
   ast = parser.parse(source_path_obj.read_text())
-  print(generate_files(ast, namespace="test"))
+  print(generate_files(ast, "test")[dir_struct])
