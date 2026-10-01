@@ -1,12 +1,9 @@
 from lark import Transformer
 
-from flintmc.nodes.definitions import (
+from flintmc.nodes import (
   FuncDef,
   TickDef,
   LoadDef,
-)
-
-from flintmc.nodes.statements import (
   stmtT,
   Assignment,
   FuncCall,
@@ -18,9 +15,6 @@ from flintmc.nodes.statements import (
   Elif,
   Else,
   ExecArg,
-)
-
-from flintmc.nodes.expression import (
   MathBinaryOp,
   MathNeg,
   LogicBinaryOp,
