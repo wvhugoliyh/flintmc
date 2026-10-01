@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 from typing import Any
 
-from flintmc.nodes.expression import (
+from flintmc.nodes import (
+  NodeType,
   ResourceLocation,
   numeric_value,
   boolean_value,
@@ -12,28 +13,28 @@ type stmtT = Assignment | FuncCall | Conditional | Repeat | Execute | Run
 
 
 @dataclass
-class Assignment:
+class Assignment(NodeType):
   id: tuple(ResourceLocation, str)
   value: numeric_value
 
 @dataclass
-class FuncCall:
+class FuncCall(NodeType):
   resource_loc: ResourceLocation
   args: list[numeric_value]
 
 @dataclass
-class Conditional:
+class Conditional(NodeType):
   if_stmt: If
   elif_stmts: list[Elif]
   else_stmt: Else | None
 
 @dataclass
-class Repeat:
+class Repeat(NodeType):
   repeat_cnt: int
   stmts: list[stmtT]
 
 @dataclass
-class Execute:
+class Execute(NodeType):
   exec_args: list[ExecArg]
   stmts: list[stmtT]
 
@@ -41,19 +42,22 @@ class Execute:
 class Run:
   raw: str
 
+  def __repr__(self):
+    return raw
+
 
 @dataclass
-class If:
+class If(NodeType):
   condition: boolean_value
   stmts: list[stmtT]
 
 @dataclass
-class Elif:
+class Elif(NodeType):
   condition: boolean_value
   stmts: list[stmtT]
 
 @dataclass
-class Else:
+class Else(NodeType):
   stmts: list[stmtT]
 
 @dataclass
@@ -76,3 +80,6 @@ class ExecArg:
   ]
 
   args: list[Any]
+
+  def __repr__(self):
+    return f"{self.cmd} {" ".join(self.args)}"
