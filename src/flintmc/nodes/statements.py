@@ -18,7 +18,7 @@ class Assignment:
 
 @dataclass
 class FuncCall:
-  loc: ResourceLocation
+  resource_loc: ResourceLocation
   args: list[numeric_value]
 
 @dataclass
