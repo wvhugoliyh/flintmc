@@ -20,7 +20,7 @@ def generate_files(
   ast: list[definitionT],
   namespace: str = "minecraft",
   /
-) -> dict:
+) -> dict[Path, str | list[stmtT]]:
 
   """Takes the AST and sorts the nodes into multiple files. Also
   returns 3 lists of definitions, one for each type.
@@ -189,16 +189,16 @@ def generate_files(
     construct_funcs(
       dir_struct,
       definition.stmts,
-      definition.id,
-      Path("data", namespace, "function")
+      definition.resource_loc.id,
+      Path("data", definition.resource_loc.namespace, "function")
     )
     
   dir_struct[function_tags_path / "tick.json"] = json.dumps({
-    "values": [f"{namespace}:{tick_def.id}" for tick_def in tick_defs]
+    "values": [str(tick_def.resource_loc) for tick_def in tick_defs]
   })
 
   dir_struct[function_tags_path / "load.json"] = json.dumps({
-    "values": [f"{namespace}:{load_def.id}" for load_def in load_defs]
+    "values": [str(load_def.resource_loc) for load_def in load_defs]
   })
 
   return {

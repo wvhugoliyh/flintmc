@@ -1,7 +1,11 @@
 from dataclasses import dataclass
 from typing import Any
 
-from flintmc.nodes.expression import numeric_value, boolean_value
+from flintmc.nodes.expression import (
+  ResourceLocation,
+  numeric_value,
+  boolean_value,
+)
 
 # Type aliases are used to reduce repetitive code
 type stmtT = Assignment | FuncCall | Conditional | Repeat | Execute | Run
@@ -9,19 +13,19 @@ type stmtT = Assignment | FuncCall | Conditional | Repeat | Execute | Run
 
 @dataclass
 class Assignment:
-  id: str
+  id: tuple(ResourceLocation, str)
   value: numeric_value
 
 @dataclass
 class FuncCall:
-  id: str
+  resource_loc: ResourceLocation
   args: list[numeric_value]
 
 @dataclass
 class Conditional:
   if_stmt: If
   elif_stmts: list[Elif]
-  else_stmt: Else | Literal[None]
+  else_stmt: Else | None
 
 @dataclass
 class Repeat:

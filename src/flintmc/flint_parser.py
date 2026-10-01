@@ -27,6 +27,7 @@ from flintmc.nodes.expression import (
   LogicNot,
   Comparison,
   EntityProp,
+  ResourceLocation,
 ) 
 
 class FlintParser(Transformer):
@@ -38,11 +39,8 @@ class FlintParser(Transformer):
   def func_def(self, children: list) -> FuncDef:
     return FuncDef(
       children[0],
-      [child for child in children[1::] if isinstance(child, str)],
-      [
-        child for child in children[1::]
-        if isinstance(child, stmtT.__value__)
-      ]
+      [child for child in children[::] if isinstance(child, str)],
+      [child for child in children[::] if isinstance(child, stmtT.__value__)]
     )
 
   def tick_def(self, children: list) -> TickDef:
@@ -53,7 +51,7 @@ class FlintParser(Transformer):
 
 
   def assignment(self, children: list) -> Assignment:
-    return Assignment(children[0], children[1])
+    return Assignment((children[-3], children[-2]), children[1])
 
   def func_call(self, children: list) -> FuncCall:
     return FuncCall(children[0], children[1::])
@@ -71,10 +69,7 @@ class FlintParser(Transformer):
   def execute(self, children: list) -> Execute:
     return Execute(
       [child for child in children[::] if isinstance(child, ExecArg)],
-      [
-        child for child in children[::]
-        if isinstance(child, stmtT.__value__)
-      ]
+      [child for child in children[::] if isinstance(child, stmtT.__value__)]
     )
 
   def run(self, children: list) -> Run:
@@ -142,8 +137,7 @@ class FlintParser(Transformer):
 
   def signed_power(self, children: list) -> MathBinaryOp | MathNeg:
     return (
-      children[-1]
-      if children.count("-") % 2 == 0
+      children[-1] if children.count("-") % 2 == 0
       else MathNeg(children[-1])
     )
 
@@ -152,6 +146,9 @@ class FlintParser(Transformer):
 
   def entity_prop(self, children: list) -> EntityProp:
     return EntityProp(children[0], children[1::])
+
+  def variable(self, children: list) -> tuple[ResourceLocation, str]:
+    return (children[0], children[1])
   
   def disjunction(self, children: list) -> LogicBinaryOp:
     return LogicBinaryOp(children[0], "||", children[1])
@@ -164,6 +161,12 @@ class FlintParser(Transformer):
   
   def comparison(self, children: list) -> Comparison:
     return Comparison(children[0], children[1], children[2])
+
+
+  def resource_loc(self, children: list) -> ResourceLocation:
+    return ResourceLocation(children[0] if len(children) == 2
+                            else "minecraft",
+                            children[-1])
 
 
   def USERNAME(self, token: Token) -> str:

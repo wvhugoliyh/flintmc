@@ -3,21 +3,21 @@ def func broadcast(text) {
 }
 
 def load main_load {
-  a = 1;
-  b = 1;
-  c = a + b;
+  fibbonacci:vars a = 1;
+  fibbonacci:vars b = 1;
+  fibbonacci:vars c = fibbonacci:vars a + fibbonacci:vars b;
 }
 
 def tick main_tick {
   /* Every tick, calculate the next 9 term of the Fibbonacci
   sequence and broadcast it */
   repeat 3 {
-    a = b + c;
-    b = a + c;
-    c = a + b;
+    fibbonacci:vars a = fibbonacci:vars b + fibbonacci:vars c;
+    fibbonacci:vars b = fibbonacci:vars a + fibbonachi:vars c;
+    fibbonacci:vars c = fibbonacci:vars a + fibbonacci:vars b;
 
-    broadcast(a);
-    broadcast(b);
-    broadcast(c);
+    broadcast(fibbonacci:vars a);
+    broadcast(fibbonacci:vars b);
+    broadcast(fibbonacci:vars c);
   }
 }

@@ -12,16 +12,16 @@ _entity_ref: ENTITY_SEL | USERNAME | UUID
 // Top level
 start: definition*
 
-definition: "def" "func" ID "(" _items{ID, ","}? ")" _block -> func_def
-          | "def" "tick" ID _block                          -> tick_def
-          | "def" "load" ID _block                          -> load_def
+definition: "def" "func" resource_loc "(" _items{ID, ","}? ")" _block -> func_def
+          | "def" "tick" resource_loc _block                          -> tick_def
+          | "def" "load" resource_loc _block                          -> load_def
 
-stmt: ID "=" expr ";"                         -> assignment
-    | ID "(" _items{expr, ","}? ")" ";"       -> func_call
-    | if_stmt elif_stmt* else_stmt?           -> conditional
-    | "repeat" INT _block                     -> repeat
-    | "execute" _items{exec_arg, ","} _block  -> execute
-    | "run" RAW ";"                           -> run
+stmt: resource_loc ID "=" expr ";"                -> assignment
+    | resource_loc "(" _items{expr, ","}? ")" ";" -> func_call
+    | if_stmt elif_stmt* else_stmt?               -> conditional
+    | "repeat" INT _block                         -> repeat
+    | "execute" _items{exec_arg, ","} _block      -> execute
+    | "run" RAW ";"                               -> run
 
 // Parts of a statements
 if_stmt: "if" "(" disjunction ")" _block
@@ -37,14 +37,14 @@ exec_arg: "align" AXES                   -> exec_align
         | "at" ID                        -> exec_at
         | "facing" _coord                -> exec_facing
         | "facing" "entity" _entity_ref  -> exec_facing_entity
-        | "in" (ID ":")? ID              -> exec_in
+        | "in" resource_loc              -> exec_in
         | "on" RELATION                  -> exec_on
         | "positioned" _coord            -> exec_pos
         | "positioned" "as" _entity_ref  -> exec_pos_as
         | "positioned" "over" HEIGHTMAP  -> exec_pos_over
         | "rotated" _angle               -> exec_rotated
         | "rotated as" _entity_ref       -> exec_rotated_as
-        | "summon" (ID ":")? ID          -> exec_summon
+        | "summon" resource_loc          -> exec_summon
 
 // Math expressions
 ?expr: term
@@ -59,8 +59,8 @@ exec_arg: "align" AXES                   -> exec_align
       | group "^" power
 
 ?group: _entity_ref ("." ID)+ -> entity_prop
+      | resource_loc ID       -> variable
       | "(" expr ")"
-      | ID
       | INT
       | DOUBLE
 
@@ -78,6 +78,8 @@ exec_arg: "align" AXES                   -> exec_align
 
 comparison: expr COMPARATOR expr  
 
+// Miscellaneous
+resource_loc: (ID ":")? ID
 
 // ======= TERMINALS =======
 USERNAME: /[a-zA-Z0-9_]{3,16}/
