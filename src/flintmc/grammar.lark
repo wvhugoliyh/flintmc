@@ -59,8 +59,8 @@ exec_arg: "align" AXES                   -> exec_align
       | group "^" power
 
 ?group: _entity_ref ("." ID)+ -> entity_prop
+      | resource_loc ID       -> variable
       | "(" expr ")"
-      | ID
       | INT
       | DOUBLE
 

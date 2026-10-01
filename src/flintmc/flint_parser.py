@@ -146,6 +146,9 @@ class FlintParser(Transformer):
 
   def entity_prop(self, children: list) -> EntityProp:
     return EntityProp(children[0], children[1::])
+
+  def variable(self, children: list) -> tuple[ResourceLocation, str]:
+    return (children[0], children[1])
   
   def disjunction(self, children: list) -> LogicBinaryOp:
     return LogicBinaryOp(children[0], "||", children[1])
