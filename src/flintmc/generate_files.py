@@ -189,8 +189,8 @@ def generate_files(
     construct_funcs(
       dir_struct,
       definition.stmts,
-      definition.id,
-      Path("data", namespace, "function")
+      definition.resource_loc.id,
+      Path("data", definition.resource_loc.namespace, "function")
     )
     
   dir_struct[function_tags_path / "tick.json"] = json.dumps({
