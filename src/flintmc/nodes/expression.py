@@ -2,7 +2,9 @@ from dataclasses import dataclass
 from typing import Literal
 
 # Type aliases are used to reduce repetitive code
-type numeric_value = MathBinaryOp | int | float | str
+type numeric_value = (MathBinaryOp | int | float
+                   | tuple[ResourceLocation, str])
+
 type boolean_value = LogicBinaryOp | Comparison | bool
 
 
@@ -36,3 +38,11 @@ class Comparison:
 class EntityProp:
   entity_sel: str
   nbt_path_comps: list[str]
+
+@dataclass
+class ResourceLocation:
+  namespace: str
+  id: str
+
+  def __repr__(self):
+    return f"{self.namespace}:{self.id}"
