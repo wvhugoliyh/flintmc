@@ -194,11 +194,11 @@ def generate_files(
     )
     
   dir_struct[function_tags_path / "tick.json"] = json.dumps({
-    "values": [f"{t}:{tick_def.resource_loc.id}" for tick_def in tick_defs]
+    "values": [str(tick_def.resource_loc) for tick_def in tick_defs]
   })
 
   dir_struct[function_tags_path / "load.json"] = json.dumps({
-    "values": [f"" for load_def in load_defs]
+    "values": [str(load_def.resource_loc) for load_def in load_defs]
   })
 
   return {
