@@ -14,33 +14,33 @@ if TYPE_CHECKING:
 type stmtT = Assignment | FuncCall | Conditional | Repeat | Execute | Run
 
 
-@dataclass
+@dataclass(repr=True)
 class Assignment(NodeType):
   id: tuple(ResourceLocation, str)
   value: numeric_value
 
-@dataclass
+@dataclass(repr=True)
 class FuncCall(NodeType):
   resource_loc: ResourceLocation
   args: list[numeric_value]
 
-@dataclass
+@dataclass(repr=True)
 class Conditional(NodeType):
   if_stmt: If
   elif_stmts: list[Elif]
   else_stmt: Else | None
 
-@dataclass
+@dataclass(repr=True)
 class Repeat(NodeType):
   repeat_cnt: int
   stmts: list[stmtT]
 
-@dataclass
+@dataclass(repr=True)
 class Execute(NodeType):
   exec_args: list[ExecArg]
   stmts: list[stmtT]
 
-@dataclass
+@dataclass(repr=True)
 class Run:
   raw: str
 
@@ -48,21 +48,21 @@ class Run:
     return self.raw
 
 
-@dataclass
+@dataclass(repr=True)
 class If(NodeType):
   condition: boolean_value
   stmts: list[stmtT]
 
-@dataclass
+@dataclass(repr=True)
 class Elif(NodeType):
   condition: boolean_value
   stmts: list[stmtT]
 
-@dataclass
+@dataclass(repr=True)
 class Else(NodeType):
   stmts: list[stmtT]
 
-@dataclass
+@dataclass(repr=True)
 class ExecArg:
   cmd: Literal[
     "align",

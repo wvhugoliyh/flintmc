@@ -9,33 +9,33 @@ type numeric_value = (MathBinaryOp | int | float
 type boolean_value = LogicBinaryOp | Comparison | bool
 
 
-@dataclass
+@dataclass(repr=True)
 class MathBinaryOp(NodeType):
   opnd_1: numeric_value
   opr: Literal["+", "-", "*", "/", "^"]
   opnd_2: numeric_value
 
-@dataclass
+@dataclass(repr=True)
 class MathNeg(NodeType):
   opnd: numeric_value
 
-@dataclass
+@dataclass(repr=True)
 class LogicBinaryOp(NodeType):
   opnd_1: boolean_value
   opr: Literal["||", "&&"]
   opnd_2: boolean_value
 
-@dataclass
+@dataclass(repr=True)
 class LogicNot(NodeType):
   opnd: boolean_value
 
-@dataclass
+@dataclass(repr=True)
 class Comparison(NodeType):
   cmpnd_1: numeric_value
   cmpr: Literal["==", "!=", "<", ">", "<=", ">="]
   cmpnd_2: numeric_value
 
-@dataclass
+@dataclass(repr=True)
 class EntityProp:
   entity_sel: str
   nbt_path_comps: list[str]
@@ -43,7 +43,7 @@ class EntityProp:
   def __repr__(self):
     return f"{self.entity_sel}.{".".join(self.nbt_path_comps)}"
 
-@dataclass
+@dataclass(repr=True)
 class ResourceLocation:
   namespace: str
   id: str
