@@ -1,23 +1,28 @@
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
-from flintmc.nodes.expression import ResourceLocation
+from flintmc.nodes import NodeType
 
-from flintmc.nodes.statements import stmtT
+if TYPE_CHECKING:
+  from flintmc.nodes import (
+    ResourceLocation,
+    stmtT,
+  )
 
 type definitionT = FuncDef | TickDef | LoadDef
 
-@dataclass
-class FuncDef:
+@dataclass(repr=False)
+class FuncDef(NodeType):
   resource_loc: ResourceLocation
   params: list[str]
   stmts: list[stmtT]
 
-@dataclass
-class TickDef:
+@dataclass(repr=False)
+class TickDef(NodeType):
   resource_loc: ResourceLocation
   stmts: list[stmtT]
 
-@dataclass
-class LoadDef:
+@dataclass(repr=False)
+class LoadDef(NodeType):
   resource_loc: ResourceLocation
   stmts: list[stmtT]

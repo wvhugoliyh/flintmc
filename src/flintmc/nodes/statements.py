@@ -1,62 +1,68 @@
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
-from flintmc.nodes.expression import (
-  ResourceLocation,
-  numeric_value,
-  boolean_value,
-)
+from flintmc.nodes import NodeType
+
+if TYPE_CHECKING:
+  from flintmc.nodes import (
+    ResourceLocation,
+    numeric_value,
+    boolean_value,
+  )
 
 # Type aliases are used to reduce repetitive code
 type stmtT = Assignment | FuncCall | Conditional | Repeat | Execute | Run
 
 
-@dataclass
-class Assignment:
+@dataclass(repr=False)
+class Assignment(NodeType):
   id: tuple(ResourceLocation, str)
   value: numeric_value
 
-@dataclass
-class FuncCall:
+@dataclass(repr=False)
+class FuncCall(NodeType):
   resource_loc: ResourceLocation
   args: list[numeric_value]
 
-@dataclass
-class Conditional:
+@dataclass(repr=False)
+class Conditional(NodeType):
   if_stmt: If
   elif_stmts: list[Elif]
   else_stmt: Else | None
 
-@dataclass
-class Repeat:
+@dataclass(repr=False)
+class Repeat(NodeType):
   repeat_cnt: int
   stmts: list[stmtT]
 
-@dataclass
-class Execute:
+@dataclass(repr=False)
+class Execute(NodeType):
   exec_args: list[ExecArg]
   stmts: list[stmtT]
 
-@dataclass
+@dataclass(repr=False)
 class Run:
   raw: str
 
+  def __repr__(self):
+    return self.raw
 
-@dataclass
-class If:
+
+@dataclass(repr=False)
+class If(NodeType):
   condition: boolean_value
   stmts: list[stmtT]
 
-@dataclass
-class Elif:
+@dataclass(repr=False)
+class Elif(NodeType):
   condition: boolean_value
   stmts: list[stmtT]
 
-@dataclass
-class Else:
+@dataclass(repr=False)
+class Else(NodeType):
   stmts: list[stmtT]
 
-@dataclass
+@dataclass(repr=False)
 class ExecArg:
   cmd: Literal[
     "align",
@@ -76,3 +82,6 @@ class ExecArg:
   ]
 
   args: list[Any]
+
+  def __repr__(self):
+    return f"{self.cmd} {" ".join(self.args)}"

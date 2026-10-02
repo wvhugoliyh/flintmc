@@ -2,14 +2,11 @@ from pathlib import Path
 from typing import Any
 import json
 
-from flintmc.nodes.definitions import (
+from flintmc.nodes import (
   definitionT,
   FuncDef,
   TickDef,
   LoadDef,
-)
-
-from flintmc.nodes.statements import (
   stmtT,
   Conditional,
   Repeat,
