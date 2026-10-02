@@ -1,12 +1,14 @@
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
-from flintmc.nodes import (
-  NodeType,
-  ResourceLocation,
-  numeric_value,
-  boolean_value,
-)
+from flintmc.nodes import NodeType
+
+if TYPE_CHECKING:
+  from flintmc.nodes import (
+    ResourceLocation,
+    numeric_value,
+    boolean_value,
+  )
 
 # Type aliases are used to reduce repetitive code
 type stmtT = Assignment | FuncCall | Conditional | Repeat | Execute | Run

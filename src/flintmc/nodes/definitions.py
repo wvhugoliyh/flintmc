@@ -1,10 +1,13 @@
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
-from flintmc.nodes import (
-  NodeType,
-  ResourceLocation,
-  stmtT,
-)
+from flintmc.nodes import NodeType
+
+if TYPE_CHECKING:
+  from flintmc.nodes import (
+    ResourceLocation,
+    stmtT,
+  )
 
 type definitionT = FuncDef | TickDef | LoadDef
 
