@@ -45,7 +45,7 @@ class FlintParser(Transformer):
 
 
   def assignment(self, children: list) -> Assignment:
-    return Assignment((children[-3], children[-2]), children[1])
+    return Assignment((children[-3], children[-2]), children[-1])
 
   def func_call(self, children: list) -> FuncCall:
     return FuncCall(children[0], children[1::])
