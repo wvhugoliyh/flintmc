@@ -3,6 +3,6 @@ class NodeType:
     str_repr = f"{type(self).__name__}:"
 
     for attr, value in vars(self).items():
-      str_repr.append(f"  {attr}:\n    {value}")
+      str_repr.append(f"\n  {attr}:\n    {value}")
 
     return str_repr

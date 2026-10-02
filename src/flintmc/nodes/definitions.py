@@ -11,18 +11,18 @@ if TYPE_CHECKING:
 
 type definitionT = FuncDef | TickDef | LoadDef
 
-@dataclass(repr=True)
+@dataclass(repr=False)
 class FuncDef(NodeType):
   resource_loc: ResourceLocation
   params: list[str]
   stmts: list[stmtT]
 
-@dataclass(repr=True)
+@dataclass(repr=False)
 class TickDef(NodeType):
   resource_loc: ResourceLocation
   stmts: list[stmtT]
 
-@dataclass(repr=True)
+@dataclass(repr=False)
 class LoadDef(NodeType):
   resource_loc: ResourceLocation
   stmts: list[stmtT]
