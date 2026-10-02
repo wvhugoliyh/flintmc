@@ -45,7 +45,7 @@ class Run:
   raw: str
 
   def __repr__(self):
-    return raw
+    return self.raw
 
 
 @dataclass
