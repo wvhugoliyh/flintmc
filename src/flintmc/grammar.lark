@@ -10,13 +10,15 @@ _angle: DOUBLE ~ 2
 _entity_ref: ENTITY_SEL | USERNAME | UUID
 
 // Top level
-start: definition*
+start: (definition | metadef)*
+
+metadef: "metadef" "namespace" ID -> namespace_metadef
 
 definition: "def" "func" resource_loc "(" _items{ID, ","}? ")" _block -> func_def
           | "def" "tick" resource_loc _block                          -> tick_def
           | "def" "load" resource_loc _block                          -> load_def
 
-stmt: resource_loc ID "=" expr ";"                -> assignment
+stmt: variable "=" expr ";"                       -> assignment
     | resource_loc "(" _items{expr, ","}? ")" ";" -> func_call
     | if_stmt elif_stmt* else_stmt?               -> conditional
     | "repeat" INT _block                         -> repeat
@@ -33,8 +35,8 @@ else_stmt: "else" _block
 
 exec_arg: "align" AXES                   -> exec_align
         | "anchored" ANCHOR              -> exec_anchor
-        | "as" ID                        -> exec_as
-        | "at" ID                        -> exec_at
+        | "as" _entity_ref               -> exec_as
+        | "at" _entity_ref               -> exec_at
         | "facing" _coord                -> exec_facing
         | "facing" "entity" _entity_ref  -> exec_facing_entity
         | "in" resource_loc              -> exec_in
@@ -59,7 +61,7 @@ exec_arg: "align" AXES                   -> exec_align
       | group "^" power
 
 ?group: _entity_ref ("." ID)+ -> entity_prop
-      | resource_loc ID       -> variable
+      | variable
       | "(" expr ")"
       | INT
       | DOUBLE
@@ -78,8 +80,10 @@ exec_arg: "align" AXES                   -> exec_align
 
 comparison: expr COMPARATOR expr  
 
-// Miscellaneous
+// Storage
 resource_loc: (ID ":")? ID
+
+variable: resource_loc? ID
 
 // ======= TERMINALS =======
 USERNAME: /[a-zA-Z0-9_]{3,16}/

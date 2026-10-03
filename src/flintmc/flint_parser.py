@@ -22,6 +22,7 @@ from flintmc.nodes import (
   Comparison,
   EntityProp,
   ResourceLocation,
+  Variable,
 ) 
 
 class FlintParser(Transformer):
@@ -29,6 +30,9 @@ class FlintParser(Transformer):
 
   def start(self, children: list) -> list:
     return children
+
+  def namespace_metadef(self, children: list) -> None:
+    self.namespace = children[0]
 
   def func_def(self, children: list) -> FuncDef:
     return FuncDef(
@@ -45,7 +49,10 @@ class FlintParser(Transformer):
 
 
   def assignment(self, children: list) -> Assignment:
-    return Assignment((children[-3], children[-2]), children[-1])
+    return Assignment(
+      children[0],
+      children[1]
+    )
 
   def func_call(self, children: list) -> FuncCall:
     return FuncCall(children[0], children[1::])
@@ -141,8 +148,12 @@ class FlintParser(Transformer):
   def entity_prop(self, children: list) -> EntityProp:
     return EntityProp(children[0], children[1::])
 
-  def variable(self, children: list) -> tuple[ResourceLocation, str]:
-    return (children[0], children[1])
+  def variable(self, children: list) -> Variable:
+    return Variable(
+      children[0] if len(children) == 2 
+      else ResourceLocation(self.namespace, "vars"),
+      children[-1]
+    )
   
   def disjunction(self, children: list) -> LogicBinaryOp:
     return LogicBinaryOp(children[0], "||", children[1])
@@ -159,8 +170,15 @@ class FlintParser(Transformer):
 
   def resource_loc(self, children: list) -> ResourceLocation:
     return ResourceLocation(children[0] if len(children) == 2
-                            else "minecraft",
+                            else getattr(self, "namespace", "minecraft"),
                             children[-1])
+
+  def variable(self, children: list) -> Variable:
+    return Variable(
+      children[0] if len(children) == 2
+      else ResourceLocation(self.namespace, "vars"),
+      children[-1]
+    )
 
 
   def USERNAME(self, token: Token) -> str:
