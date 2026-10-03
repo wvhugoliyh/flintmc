@@ -1,8 +1,16 @@
 class NodeType:
   def __repr__(self) -> str:
-    str_repr = f"\n{type(self).__name__}:"
+    repr_lines = ["", f"{type(self).__name__}:"]
 
-    for attr, value in vars(self).items():
-      str_repr = str_repr + f"\n  {attr}:\n    {value}"
+    for key, value in vars(self).items():
+      repr_lines.append(f"  {key}:")
 
-    return str_repr + "\n"
+      if isinstance(value, (NodeType, list)):
+        value_lines = str(value).splitlines()
+        repr_lines.extend(map(lambda line: f"    {line}", value_lines[1::]))
+
+      else:
+        repr_lines[-1] = f"{repr_lines[-1]} {value}"
+
+    repr_lines.append("")
+    return "\n".join(repr_lines)
