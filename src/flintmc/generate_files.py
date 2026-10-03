@@ -183,6 +183,9 @@ def generate_files(
   })
 
   for definition in ast:
+    if definition == None:
+      continue
+      
     construct_funcs(
       dir_struct,
       definition.stmts,

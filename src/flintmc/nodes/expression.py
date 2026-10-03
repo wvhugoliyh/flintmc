@@ -3,8 +3,7 @@ from typing import Literal
 
 from flintmc.nodes import NodeType
 
-type numeric_value = (MathBinaryOp | int | float
-                   | tuple[ResourceLocation, str])
+type numeric_value = MathBinaryOp | int | float | Variable
 
 type boolean_value = LogicBinaryOp | Comparison | bool
 
@@ -50,3 +49,11 @@ class ResourceLocation:
 
   def __repr__(self):
     return f"{self.namespace}:{self.id}"
+
+@dataclass(repr=False)
+class Variable:
+  resource_loc: ResourceLocation
+  id: str
+
+  def __repr__(self):
+    return f"{self.resource_loc} {self.id}"

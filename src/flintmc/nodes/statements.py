@@ -6,6 +6,7 @@ from flintmc.nodes import NodeType
 if TYPE_CHECKING:
   from flintmc.nodes import (
     ResourceLocation,
+    Variable,
     numeric_value,
     boolean_value,
   )
