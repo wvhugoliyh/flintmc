@@ -1,6 +1,6 @@
 class NodeType:
   def __repr__(self) -> str:
-    repr_lines = ["", f"{type(self).__name__}:", ""]
+    repr_lines = ["", f"{type(self).__name__}:"]
 
     for key, value in vars(self).items():
       repr_lines.append(f"  {key}:")
@@ -12,4 +12,5 @@ class NodeType:
       else:
         repr_lines[-1] = f"{repr_lines[-1]} {value}"
 
+    repr_lines.append("")
     return "\n".join(repr_lines)
