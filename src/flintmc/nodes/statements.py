@@ -42,12 +42,8 @@ class Execute(NodeType):
   stmts: list[stmtT]
 
 @dataclass(repr=False)
-class Run:
+class Run(NodeType):
   raw: str
-
-  def __repr__(self):
-    return self.raw
-
 
 @dataclass(repr=False)
 class If(NodeType):
@@ -64,7 +60,7 @@ class Else(NodeType):
   stmts: list[stmtT]
 
 @dataclass(repr=False)
-class ExecArg:
+class ExecArg(NodeType):
   cmd: Literal[
     "align",
     "anchored",
@@ -83,6 +79,3 @@ class ExecArg:
   ]
 
   args: list[Any]
-
-  def __repr__(self):
-    return f"{self.cmd} {" ".join(self.args)}"

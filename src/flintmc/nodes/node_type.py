@@ -5,7 +5,7 @@ class NodeType:
     for key, value in vars(self).items():
       repr_lines.append(f"  {key}:")
 
-      if isinstance(value, NodeType):
+      if isinstance(value, (NodeType, list)):
         value_lines = str(value).splitlines()
         repr_lines.extend(map(lambda line: f"    {line}", value_lines[1::]))
 
