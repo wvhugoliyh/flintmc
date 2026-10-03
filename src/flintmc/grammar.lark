@@ -12,7 +12,7 @@ _entity_ref: ENTITY_SEL | USERNAME | UUID
 // Top level
 start: (definition | metadef)*
 
-metadef: "metadef" "namespace" ID -> namespace_metadef
+metadef: "metadef" "namespace" ID ";" -> namespace_metadef
 
 definition: "def" "func" resource_loc "(" _items{ID, ","}? ")" _block -> func_def
           | "def" "tick" resource_loc _block                          -> tick_def

@@ -1,23 +1,25 @@
+metadef namespace fibbonacci;
+
 def func broadcast(text) {
   run $tellraw @a "$(text)";
 }
 
 def load main_load {
-  fibbonacci:vars a = 1;
-  fibbonacci:vars b = 1;
-  fibbonacci:vars c = fibbonacci:vars a + fibbonacci:vars b;
+  a = 1;
+  b = 1;
+  c = a + b;
 }
 
 def tick main_tick {
   /* Every tick, calculate the next 9 term of the Fibbonacci
   sequence and broadcast it */
   repeat 3 {
-    fibbonacci:vars a = fibbonacci:vars b + fibbonacci:vars c;
-    fibbonacci:vars b = fibbonacci:vars a + fibbonachi:vars c;
-    fibbonacci:vars c = fibbonacci:vars a + fibbonacci:vars b;
+    a = b + c;
+    b = a + c;
+    c = a + b;
 
-    broadcast(fibbonacci:vars a);
-    broadcast(fibbonacci:vars b);
-    broadcast(fibbonacci:vars c);
+    broadcast(a);
+    broadcast(b);
+    broadcast(c);
   }
 }
