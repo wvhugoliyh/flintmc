@@ -17,7 +17,7 @@ type stmtT = Assignment | FuncCall | Conditional | Repeat | Execute | Run
 
 @dataclass(repr=False)
 class Assignment(NodeType):
-  variable: Variable
+  var: Variable
   value: numeric_value
 
 @dataclass(repr=False)
