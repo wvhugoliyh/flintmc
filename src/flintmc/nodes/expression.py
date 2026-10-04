@@ -35,25 +35,16 @@ class Comparison(NodeType):
   cmpnd_2: numeric_value
 
 @dataclass(repr=False)
-class EntityProp:
+class EntityProp(NodeType):
   entity_sel: str
   nbt_path_comps: list[str]
 
-  def __repr__(self):
-    return f"{self.entity_sel}.{".".join(self.nbt_path_comps)}"
-
 @dataclass(repr=False)
-class ResourceLocation:
+class ResourceLocation(NodeType):
   namespace: str
   id: str
 
-  def __repr__(self):
-    return f"{self.namespace}:{self.id}"
-
 @dataclass(repr=False)
-class Variable:
+class Variable(NodeType):
   resource_loc: ResourceLocation
   id: str
-
-  def __repr__(self):
-    return f"{self.resource_loc} {self.id}"
