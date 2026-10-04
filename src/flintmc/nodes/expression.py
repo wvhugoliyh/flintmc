@@ -44,6 +44,9 @@ class ResourceLocation(NodeType):
   namespace: str
   id: str
 
+  def __repr__(self):
+    return f"{self.namespace}:{self.id}"
+
 @dataclass(repr=False)
 class Variable(NodeType):
   resource_loc: ResourceLocation
