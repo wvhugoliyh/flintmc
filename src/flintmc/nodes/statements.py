@@ -17,7 +17,7 @@ type stmtT = Assignment | FuncCall | Conditional | Repeat | Execute | Run
 
 @dataclass(repr=False)
 class Assignment(NodeType):
-  id: tuple(ResourceLocation, str)
+  variable: Variable
   value: numeric_value
 
 @dataclass(repr=False)
