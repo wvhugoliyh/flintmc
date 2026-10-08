@@ -68,7 +68,7 @@ def generate_files(
       # property to its path
       for subfunc_stmt in subfunc_stmts:
         if isinstance(subfunc_stmt, (Conditional, Execute, Repeat)):
-          subfunc_stmts.path = path
+          subfunc_stmt.path = path
 
       construct_funcs(
         dir_struct,
