@@ -29,7 +29,6 @@ class FuncCall(NodeType):
 @dataclass(repr=False)
 class Conditional(NodeType):
   if_stmt: If
-  elif_stmts: list[Elif]
   else_stmt: Else | None
 
 @dataclass(repr=False)
@@ -48,11 +47,6 @@ class Run(NodeType):
 
 @dataclass(repr=False)
 class If(NodeType):
-  condition: boolean_value
-  stmts: list[stmtT]
-
-@dataclass(repr=False)
-class Elif(NodeType):
   condition: boolean_value
   stmts: list[stmtT]
 

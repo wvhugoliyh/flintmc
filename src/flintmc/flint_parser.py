@@ -12,7 +12,6 @@ from flintmc.nodes import (
   Execute,
   Run,
   If,
-  Elif,
   Else,
   MathBinaryOp,
   MathNeg,
@@ -57,11 +56,7 @@ class FlintParser(Transformer):
     return FuncCall(children[0], children[1::])
 
   def conditional(self, children: list) -> Conditional:
-    return Conditional(
-      children[0],
-      [child for child in children[1::] if isinstance(child, Elif)],
-      children[-1] if isinstance(children[-1], Else) else None
-    )
+    return Conditional(children[0], children[-1])
 
   def repeat(self, children: list) -> Repeat:
     return Repeat(children[0], children[1::])
@@ -75,9 +70,6 @@ class FlintParser(Transformer):
   
   def if_stmt(self, children: list) -> If:
     return If(children[0], children[1::])
-
-  def elif_stmt(self, children: list) -> Elif:
-    return Elif(children[0], children[1::])
 
   def else_stmt(self, children: list) -> Else:
     return Else(children[::])

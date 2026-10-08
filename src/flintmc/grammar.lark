@@ -18,19 +18,12 @@ definition: "def" "func" resource_loc "(" _items{ID, ","}? ")" _block -> func_de
           | "def" "tick" resource_loc _block                          -> tick_def
           | "def" "load" resource_loc _block                          -> load_def
 
-stmt: variable "=" expr ";"                       -> assignment
-    | resource_loc "(" _items{expr, ","}? ")" ";" -> func_call
-    | if_stmt elif_stmt* else_stmt?               -> conditional
-    | "repeat" INT _block                         -> repeat
-    | "execute" RAW _block                        -> execute
-    | RAW ";"                                     -> run
-
-// Parts of a statements
-if_stmt: "if" "(" disjunction ")" _block
-
-elif_stmt: "elif" "(" disjunction ")" _block
-
-else_stmt: "else" _block
+stmt: variable "=" expr ";"                            -> assignment
+    | resource_loc "(" _items{expr, ","}? ")" ";"      -> func_call
+    | "if" "(" disjunction ")" _block ("else" _block)? -> conditional
+    | "repeat" INT _block                              -> repeat
+    | "execute" RAW _block                             -> execute
+    | RAW ";"                                          -> run
 
 // Math expressions
 ?expr: term

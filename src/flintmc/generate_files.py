@@ -34,9 +34,6 @@ def generate_files(
     for stmt_idx, stmt in enumerate(stmts):
       if isinstance(stmt, Conditional):
         subfuncs[path / f"if-{stmt_idx}"] = stmt.if_stmt.stmts
- 
-        for elif_idx, elif_stmt in enumerate(stmt.elif_stmts):
-          subfuncs[path / f"elif-{stmt_idx}-{elif_idx}"] = elif_stmt.stmts
 
         if stmt.else_stmt:
           subfuncs[path / f"else-{stmt_idx}"] = stmt.else_stmt.stmts
