@@ -5,6 +5,7 @@ from flintmc.nodes import NodeType
 
 if TYPE_CHECKING:
   from flintmc.nodes import (
+    Raw,
     ResourceLocation,
     Variable,
     numeric_value,
@@ -38,12 +39,12 @@ class Repeat(NodeType):
 
 @dataclass(repr=False)
 class Execute(NodeType):
-  exec_args: list[ExecArg]
+  raw: Raw
   stmts: list[stmtT]
 
 @dataclass(repr=False)
 class Run(NodeType):
-  raw: str
+  raw: Raw
 
 @dataclass(repr=False)
 class If(NodeType):
@@ -58,24 +59,3 @@ class Elif(NodeType):
 @dataclass(repr=False)
 class Else(NodeType):
   stmts: list[stmtT]
-
-@dataclass(repr=False)
-class ExecArg(NodeType):
-  cmd: Literal[
-    "align",
-    "anchored",
-    "as",
-    "at",
-    "facing",
-    "facing_entity",
-    "in",
-    "on",
-    "pos",
-    "pos_as",
-    "pos_over",
-    "rotated",
-    "rotated_as",
-    "summon",
-  ]
-
-  args: list[Any]

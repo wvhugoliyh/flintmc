@@ -51,3 +51,10 @@ class ResourceLocation(NodeType):
 class Variable(NodeType):
   resource_loc: ResourceLocation
   id: str
+
+@dataclass(repr=False)
+class Raw(NodeType):
+  raw: str
+
+  def __repr__(self):
+    return raw

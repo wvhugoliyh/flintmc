@@ -22,8 +22,8 @@ stmt: variable "=" expr ";"                       -> assignment
     | resource_loc "(" _items{expr, ","}? ")" ";" -> func_call
     | if_stmt elif_stmt* else_stmt?               -> conditional
     | "repeat" INT _block                         -> repeat
-    | "execute" _items{exec_arg, ","} _block      -> execute
-    | "run" RAW ";"                               -> run
+    | "execute" RAW _block                        -> execute
+    | RAW ";"                                     -> run
 
 // Parts of a statements
 if_stmt: "if" "(" disjunction ")" _block
@@ -31,22 +31,6 @@ if_stmt: "if" "(" disjunction ")" _block
 elif_stmt: "elif" "(" disjunction ")" _block
 
 else_stmt: "else" _block
-
-
-exec_arg: "align" AXES                   -> exec_align
-        | "anchored" ANCHOR              -> exec_anchor
-        | "as" _entity_ref               -> exec_as
-        | "at" _entity_ref               -> exec_at
-        | "facing" _coord                -> exec_facing
-        | "facing" "entity" _entity_ref  -> exec_facing_entity
-        | "in" resource_loc              -> exec_in
-        | "on" RELATION                  -> exec_on
-        | "positioned" _coord            -> exec_pos
-        | "positioned" "as" _entity_ref  -> exec_pos_as
-        | "positioned" "over" HEIGHTMAP  -> exec_pos_over
-        | "rotated" _angle               -> exec_rotated
-        | "rotated as" _entity_ref       -> exec_rotated_as
-        | "summon" resource_loc          -> exec_summon
 
 // Math expressions
 ?expr: term
@@ -94,16 +78,12 @@ ID: /[a-zA-Z_][a-zA-Z0-9_]*/
 
 ENTITY_SEL: /@[spnr]/
 
-RAW.-1: /[^;]+/
+RAW.-1: /`[^`]*`/
 
 // Execute arguments
 AXES: /(?!.*(.).*\1)[xyz]+/
 
 ANCHOR: /eyes|feet/
-
-RELATION: /attacker|controller|leasher|origin|owner|passengers|target|vehicle/
-
-HEIGHTMAP: /world_surface|motion_blocking|motion_blocking_no_leaves|ocean_floor/
 
 // Data types
 INT: /[0-9]+/

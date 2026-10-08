@@ -14,7 +14,6 @@ from flintmc.nodes import (
   If,
   Elif,
   Else,
-  ExecArg,
   MathBinaryOp,
   MathNeg,
   LogicBinaryOp,
@@ -68,10 +67,7 @@ class FlintParser(Transformer):
     return Repeat(children[0], children[1::])
 
   def execute(self, children: list) -> Execute:
-    return Execute(
-      [child for child in children[::] if isinstance(child, ExecArg)],
-      [child for child in children[::] if isinstance(child, stmtT.__value__)]
-    )
+    return Execute(children[0], children[1::])
 
   def run(self, children: list) -> Run:
     return Run(children[0])
@@ -85,49 +81,6 @@ class FlintParser(Transformer):
 
   def else_stmt(self, children: list) -> Else:
     return Else(children[::])
-
-
-  def exec_align(self, children: list) -> ExecArg:
-    return ExecArg("align", children)
-
-  def exec_anchored(self, children: list) -> ExecArg:
-    return ExecArg("anchored", children)
-
-  def exec_as(self, children: list) -> ExecArg:
-    return ExecArg("as", children)
-
-  def exec_at(self, children: list) -> ExecArg:
-    return ExecArg("at", children)
-
-  def exec_facing(self, children: list) -> ExecArg:
-    return ExecArg("facing", children)
-
-  def exec_facing_entity(self, children: list) -> ExecArg:
-    return ExecArg("facing_entity", children)
-
-  def exec_in(self, children: list) -> ExecArg:
-    return ExecArg("in", children)
-
-  def exec_on(self, children: list) -> ExecArg:
-    return ExecArg("on", children)
-
-  def exec_pos(self, children: list) -> ExecArg:
-    return ExecArg("pos", children)
-
-  def exec_pos_as(self, children: list) -> ExecArg:
-    return ExecArg("pos_as", children)
-
-  def exec_pos_over(self, children: list) -> ExecArg:
-    return ExecArg("pos_over", children)
-
-  def exec_rotated(self, children: list) -> ExecArg:
-    return ExecArg("rotated", children)
-
-  def exec_rotated_as(self, children: list) -> ExecArg:
-    return ExecArg("rotated_as", children)
-
-  def exec_summon(self, children: list) -> ExecArg:
-    return ExecArg("summon", children)
 
   
   def expr(self, children: list) -> MathBinaryOp:
