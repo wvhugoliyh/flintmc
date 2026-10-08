@@ -69,7 +69,7 @@ class FlintParser(Transformer):
   
   
   def if_stmt(self, children: list) -> If:
-    return If(children[0], children[1::])
+    return If(children[0], children[1] if len[children] == 2 else None)
 
   def else_stmt(self, children: list) -> Else:
     return Else(children[::])
