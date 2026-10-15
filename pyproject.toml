@@ -20,4 +20,4 @@ license-files = ["LICENSE"]
 authors = [{name = "vhugoliyh", email = "vvhugoliyh@gmail.com"}]
 
 [project.scripts]
-flintmc = "flintmc:main"
+flintmc = "flintmc:app"
