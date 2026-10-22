@@ -11,6 +11,7 @@ requires-python = "==3.15"
 
 dependencies = [
   "lark",
+  "regex",
   "typer",
 ]
 
