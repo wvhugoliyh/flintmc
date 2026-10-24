@@ -38,7 +38,7 @@ map: "{" (STRING_LITERAL ":" value ",")* (STRING_LITERAL ":" value)? "}"
 ?atom: "(" expr ")" | map | func_call | variable | INT_LITERAL | FLOAT_LITERAL | BOOLEAN_LITERAL
 
 resource_location: ID ":" ID
-entity: UUID | ID | ENTITY_SELECTOR
+entity: UUID | ID | TARGET_SELECTOR
 coordinate: "(" value "," value "," value ","? ")"
 
 
@@ -56,7 +56,7 @@ MUL_OP: /[*\/]/
 COMPARATOR: /==|!=|<|>|<=|>=/
 
 UUID: /[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/
-ENTITY_SELECTOR: /@[aenpsr]/
+TARGET_SELECTOR: /@[aenpsr]/
 
 %ignore /\s+/
 %ignore /\/{2}.*|\/\*[\s\S]*?\*\//
