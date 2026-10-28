@@ -1,0 +1,12 @@
+from dataclasses import dataclass
+from typing import TYPE_CHECKING
+
+from flintmc.nodes.node import Node
+
+if TYPE_CHECKING:
+    from flintmc.nodes import Value
+
+
+@dataclass(slots=True)
+class Negation(Node):
+    operand: Value

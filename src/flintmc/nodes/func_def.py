@@ -1,0 +1,14 @@
+from dataclasses import dataclass
+from typing import TYPE_CHECKING
+
+from flintmc.nodes.node import Node
+
+if TYPE_CHECKING:
+    from flintmc.nodes import ResourceLocation, Statement
+
+
+@dataclass(slots=True)
+class FuncDef(Node):
+    rsrc_loc: ResourceLocation
+    params: list[str]
+    statements: list[Statement]
