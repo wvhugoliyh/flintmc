@@ -2,27 +2,27 @@ items{item}: (item ",")* item?
 
 start: definition*
 
-definition: func_def
+?definition: func_def
 
 func_def: "def" "Function" resource_location "(" _items{ID} ")" code_block
 
 
 code_block: statement | "{" statement* "}"
 
-statement: RAW ";"
-         | assignment ";"
-         | func_call ";"
+?statement: RAW ";"
+          | assignment ";"
+          | func_call ";"
 
 assignment: variable "=" value
 func_call: ID "(" _items{value} ")"
 
 
-value: array | expr | STRING_LITERAL
+?value: array | expr | STRING_LITERAL
 
 variable: ID
         | (resource_location | entity | coordinate) (ID | STRING_LITERAL) -> nbt
-        | atom "." (ID | STRING_LITERAL)                                 -> map_property
-        | atom "[" expr "]"                                              -> array_item
+        | atom "." (ID | STRING_LITERAL)                                  -> map_property
+        | atom "[" expr "]"                                               -> array_item
 
 array: "[" _items{value} "]"
 map: "{" (STRING_LITERAL ":" value ",")* (STRING_LITERAL ":" value)? "}"
