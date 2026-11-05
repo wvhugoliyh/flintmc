@@ -1,6 +1,8 @@
 import typer
 from lark import Lark
 
+from flintmc.parser import FlintParser
+
 app = typer.Typer()
 
 @app.command()
@@ -11,4 +13,5 @@ def main(source_path: str) -> None:
         parser="lalr",
         regex=True,
         debug=True,
+        transformer=FlintParser,
     )
