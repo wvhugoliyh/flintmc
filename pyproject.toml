@@ -11,6 +11,7 @@ requires-python = ">=3.15"
 
 dependencies = [
   "lark",
+  "regex",
   "typer",
 ]
 
@@ -21,3 +22,8 @@ authors = [{name = "vhugoliyh", email = "vvhugoliyh@gmail.com"}]
 
 [project.scripts]
 flintmc = "flintmc:app"
+
+[tool.ruff.lint]
+ignore = [
+  "UP040"
+]
