@@ -3,6 +3,8 @@ from pathlib import Path
 import typer
 from lark import Lark
 
+from flintmc.parser import FlintParser
+
 app = typer.Typer()
 
 @app.command()
@@ -15,4 +17,5 @@ def main(source_path: str) -> None:
         debug=True,
     )
 
-    cst = parser.parse(Path(source_path).read_text()) # noqa F841
+    cst = parser.parse(Path(source_path).read_text()) 
+    ast = FlintParser().transform(cst) # noqa F841

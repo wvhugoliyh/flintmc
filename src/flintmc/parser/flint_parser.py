@@ -1,0 +1,159 @@
+from typing import Literal, TypeVar
+from uuid import UUID
+
+from lark import Transformer, v_args
+
+from flintmc.nodes import (
+    ArrayItem,
+    Assignable,
+    Assignment,
+    Comparator,
+    Comparison,
+    Coordinate,
+    Definition,
+    FuncCall,
+    FuncDef,
+    LogicBinaryOp,
+    MathBinaryOp,
+    NBTLocation,
+    Negation,
+    Negative,
+    Property,
+    Raw,
+    ResourceLocation,
+    Statement,
+    TargetSelector,
+    Value,
+    Variable,
+)
+
+T = TypeVar("T")
+
+@v_args(inline=True)
+class FlintParser(Transformer):
+    def start(self, *definitions: Definition) -> list[Definition]:
+        return list(definitions)
+
+
+    def func_def(
+            self, func: ResourceLocation, params: list[str],
+            statements: list[Statement]) -> FuncDef:
+        return FuncDef(func, params, statements)
+
+
+    def items(self, *items: T) -> list[T]:
+        return list(items)
+
+    def code_block(self, *statements: Statement) -> list[Statement]:
+        return list(statements)
+
+
+    def assignment(self, assignee: Assignable, value: Value) -> Assignment:
+        return Assignment(assignee, value)
+
+    def func_call(
+            self, rsrc_loc: ResourceLocation, args: list[Value]) -> FuncCall:
+        return FuncCall(rsrc_loc, args)
+
+
+    def variable(self, id: str) -> Variable:
+        return Variable(ResourceLocation("minecraft", "vars"), id)
+
+    def nbt(self, nbt_location: NBTLocation, id: str) -> Variable:
+        return Variable(nbt_location, id)
+
+    def map_property(self, map: Value, property_id: str) -> Property:
+        return Property(map, property_id)
+
+    def array_item(self, array: Value, index: Value) -> ArrayItem:
+        return ArrayItem(array, index)
+
+    def array(self, items: list[Value]) -> list[Value]:
+        return items
+
+    def map(self, kv_pairs: list[tuple[str, Value]]) -> dict[str, Value]:
+        return dict(kv_pairs)
+
+    def kv_pair(self, key: str, value: Value) -> tuple[str, Value]:
+        return (key, value)
+
+    def disjunction(self, operand_1: Value, operand_2: Value) -> LogicBinaryOp:
+        return LogicBinaryOp(operand_1, "||", operand_2)
+
+    def conjunction(self, operand_1: Value, operand_2: Value) -> LogicBinaryOp:
+        return LogicBinaryOp(operand_1, "&&", operand_2)
+
+    def negation(self, operand: Value) -> Value:
+        if isinstance(operand, Negation):
+            return operand.operand
+        else:
+            return Negation(operand)
+
+    def comparison(
+            self, comparand_1: Value, comparator: Comparator,
+            comparand_2: Value) -> Comparison:
+        return Comparison(comparand_1, comparator, comparand_2)
+
+    def sum(
+            self, operand_1: Value, operator: Literal["+", "-"],
+            operand_2: Value) -> MathBinaryOp:
+        return MathBinaryOp(operand_1, operator, operand_2)
+
+    def term(
+            self, operand_1: Value, operator: Literal["*", "/"],
+            operand_2: Value) -> MathBinaryOp:
+        return MathBinaryOp(operand_1, operator, operand_2)
+
+    def signed_power(
+            self, operator: Literal["+", "-"], operand: Value) -> Value:
+        if operator == "+":
+            return operand
+        elif isinstance(operand, Negative):
+            return operand.operand
+        else:
+            return Negative(operand)
+
+    def power(self, operand_1: Value, operand_2: Value) -> MathBinaryOp:
+        return MathBinaryOp(operand_1, "^", operand_2)
+
+
+    def resource_location(
+            self, namespace: str, path: str) -> ResourceLocation:
+        return ResourceLocation(namespace, path)
+
+    def coordinate(self, x: Value, y: Value, z: Value) -> Coordinate:
+        return Coordinate(x, y, z)
+
+    
+    def ID(self, token) -> str:
+        return str(token)
+
+    def RAW(self, token) -> Raw:
+        return Raw(token)
+
+    def INT_LITERAL(self, token) -> int:
+        return int(token)
+
+    def FLOAT_LITERAL(self, token) -> float:
+        return float(token)
+
+    def BOOLEAN_LITERAL(self, token) -> bool:
+        return str(token) == "True"
+
+    def STRING_LITERAL(self, token) -> str:
+        return str(token).strip("\"'")
+
+    def SIGN(self, token) -> str:
+        return str(token)
+
+    def MUL_OP(self, token) -> str:
+        return str(token)
+
+    def COMPARATOR(self, token) -> str:
+        return str(token)
+
+    def UUID(self, token) -> UUID:
+        return UUID(str(token))
+
+    def TARGET_SELECTOR(self, token) -> TargetSelector:
+        return TargetSelector(token[1])
