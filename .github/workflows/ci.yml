@@ -27,7 +27,7 @@ jobs:
         uses: astral-sh/setup-uv@v10.3.0
         
       - name: Install Python
-        uses: actions/setup-python@7.1.0
+        uses: actions/setup-python@v7.1.0
 
       - name: Run Flint
         run: |
