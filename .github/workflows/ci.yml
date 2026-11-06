@@ -27,4 +27,4 @@ jobs:
         uses: astral-sh/setup-uv@v10.3.0
 
       - name: Run Flint
-        run: uv run --python 3.15 .
+        run: uv run --python 3.15 flintmc test/test.flint
