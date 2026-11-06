@@ -1,5 +1,5 @@
 from typing import TypeAlias
 
-from flintmc.nodes import FuncDef
+from flintmc.nodes.func_def import FuncDef
 
 Definition: TypeAlias = FuncDef
