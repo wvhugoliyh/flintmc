@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
-from flintmc.nodes import Node
+from flintmc.nodes.node import Node
 
 if TYPE_CHECKING:
     from flintmc.nodes import Value

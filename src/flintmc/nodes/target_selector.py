@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Literal
 
-from flintmc.nodes import Node
+from flintmc.nodes.node import Node
 
 
 @dataclass(slots=True)
