@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import typer
 from lark import Lark
 
@@ -7,11 +9,12 @@ app = typer.Typer()
 
 @app.command()
 def main(source_path: str) -> None:
-    parser = Lark.open( # noqa F841
+    parser = Lark.open(
         "parser/flint.lark",
         rel_to=__file__,
-        parser="lalr",
         regex=True,
         debug=True,
-        transformer=FlintParser,
     )
+
+    cst = parser.parse(Path(source_path).read_text())
+    ast = FlintParser().transform(cst) # noqa F841
