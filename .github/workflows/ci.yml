@@ -28,5 +28,5 @@ jobs:
 
       - name: Run Flint
         run: |
-          uv pip install -e .
-          flintmc test/flint.yml
+          uv pip install -e . --system
+          flintmc test/flint.yml 
