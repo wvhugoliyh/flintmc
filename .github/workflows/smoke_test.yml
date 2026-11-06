@@ -1,0 +1,20 @@
+name: Smoke Test
+on:
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7.0.1
+
+      - name: Install UV
+        uses: astral-sh/setup-uv@v10.3.0
+
+      - name: Run Flint
+        runs: |
+          uv pip install -e .
+          flintmc test/flint.yml
