@@ -25,13 +25,7 @@ jobs:
 
       - name: Install UV
         uses: astral-sh/setup-uv@v10.3.0
-        
-      - name: Install Python
-        uses: actions/setup-python@v7.1.0
-        with:
-          - python-version: "3.15"
 
       - name: Run Flint
         run: |
-          uv pip install -e . --system
-          flintmc test/flint.yml 
+          uv run --python 3.15 pyproject.toml
