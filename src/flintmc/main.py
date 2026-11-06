@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import typer
 from lark import Lark
 
@@ -12,5 +14,7 @@ def main(source_path: str) -> None:
         rel_to=__file__,
         regex=True,
         debug=True,
-        transformer=FlintParser,
     )
+
+    cst = parser.parse(Path(source_path).read_text())
+    ast = FlintParser().transform(cst)
