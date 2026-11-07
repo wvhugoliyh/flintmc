@@ -15,6 +15,7 @@ from flintmc.nodes import (
     FuncDef,
     NBTLocation,
     Property,
+    Raw,
     ResourceLocation,
     Statement,
     TargetSelector,
@@ -115,8 +116,8 @@ class FlintParser(Transformer):
     def ID(self, token) -> str:
         return str(token)
 
-    def RAW(self, token) -> str:
-        return str(token)
+    def RAW(self, token) -> Raw:
+        return Raw(token)
 
     def INT_LITERAL(self, token) -> int:
         return int(token)
