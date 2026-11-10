@@ -9,6 +9,7 @@ from flintmc.nodes import (
     Assignment,
     BinaryOp,
     Comparator,
+    Comparison,
     Coordinate,
     Definition,
     FuncCall,
@@ -85,7 +86,7 @@ class FlintParser(Transformer):
     def comparison(
             self, comparand_1: Value, comparator: Comparator,
             comparand_2: Value) -> BinaryOp:
-        return BinaryOp(comparand_1, comparator, comparand_2)
+        return Comparison(comparand_1, comparator, comparand_2)
 
     def sum(
             self, operand_1: Value, operator: Literal["+", "-"],
