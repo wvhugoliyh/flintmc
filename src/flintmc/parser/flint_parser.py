@@ -85,7 +85,7 @@ class FlintParser(Transformer):
 
     def comparison(
             self, comparand_1: Value, comparator: Comparator,
-            comparand_2: Value) -> BinaryOp:
+            comparand_2: Value) -> Comparison:
         return Comparison(comparand_1, comparator, comparand_2)
 
     def sum(
