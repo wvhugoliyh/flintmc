@@ -3,6 +3,7 @@ from .assignable import Assignable as Assignable
 from .assignment import Assignment as Assignment
 from .binary_op import BinaryOp as BinaryOp
 from .comparator import Comparator as Comparator
+from .comparison import Comparison as Comparison
 from .coordinate import Coordinate as Coordinate
 from .definition import Definition as Definition
 from .entity import Entity as Entity

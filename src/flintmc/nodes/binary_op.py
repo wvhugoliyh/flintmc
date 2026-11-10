@@ -4,11 +4,11 @@ from typing import TYPE_CHECKING, Literal
 from flintmc.nodes.node import Node
 
 if TYPE_CHECKING:
-    from flintmc.nodes import Comparator, Value
+    from flintmc.nodes import Value
 
 
 @dataclass(slots=True)
 class BinaryOp(Node):
     operand_1: Value
-    operator: Literal["+", "-", "*", "/", "^", "||", "&&"] | Comparator
+    operator: Literal["+", "-", "*", "/", "^", "||", "&&"]
     operand_2: Value
