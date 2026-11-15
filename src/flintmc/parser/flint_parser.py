@@ -80,8 +80,12 @@ class FlintParser(Transformer):
     def conjunction(self, operand_1: Value, operand_2: Value) -> BinaryOp:
         return BinaryOp(operand_1, "&&", operand_2)
 
-    def negation(self, operand: Value) -> UnaryOp:
-        return UnaryOp("!", operand)
+    def negation(self, operand: Value) -> Value:
+        if isinstance(operand, UnaryOp) and operand.operator == "!":
+            return operand.operand
+        else:
+            return UnaryOp("!", operand)
+
 
     def comparison(
             self, comparand_1: Value, comparator: Comparator,
@@ -100,7 +104,12 @@ class FlintParser(Transformer):
 
     def signed_power(
             self, operator: Literal["+", "-"], operand: Value) -> Value:
-        return operand if operator == "+" else UnaryOp("-", operand)
+        if operator == "+":
+            return operand
+        elif isinstance(operand, UnaryOp) and operand.operator == "-":
+            return operand.operand
+        else:
+            return UnaryOp("-", operand)
 
     def power(self, operand_1: Value, operand_2: Value) -> BinaryOp:
         return BinaryOp(operand_1, "^", operand_2)
