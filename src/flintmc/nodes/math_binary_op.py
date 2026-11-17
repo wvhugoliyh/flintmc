@@ -8,6 +8,7 @@ if TYPE_CHECKING:
 
 
 @dataclass(slots=True)
-class UnaryOp(Node):
-    operator: Literal["-", "!"]
-    operand: Value
+class MathBinaryOp(Node):
+    operand_1: Value
+    operator: Literal["+", "-", "*", "/", "^"]
+    operand_2: Value

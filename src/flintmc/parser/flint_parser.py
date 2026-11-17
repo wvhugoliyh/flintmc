@@ -7,20 +7,22 @@ from flintmc.nodes import (
     ArrayItem,
     Assignable,
     Assignment,
-    BinaryOp,
     Comparator,
     Comparison,
     Coordinate,
     Definition,
     FuncCall,
     FuncDef,
+    LogicBinaryOp,
+    MathBinaryOp,
     NBTLocation,
+    Negation,
+    Negative,
     Property,
     Raw,
     ResourceLocation,
     Statement,
     TargetSelector,
-    UnaryOp,
     Value,
 )
 
@@ -74,17 +76,17 @@ class FlintParser(Transformer):
     def key_value_pair(self, key: str, value: Value) -> tuple[str, Value]:
         return (key, value)
 
-    def disjunction(self, operand_1: Value, operand_2: Value) -> BinaryOp:
-        return BinaryOp(operand_1, "||", operand_2)
+    def disjunction(self, operand_1: Value, operand_2: Value) -> LogicBinaryOp:
+        return LogicBinaryOp(operand_1, "||", operand_2)
 
-    def conjunction(self, operand_1: Value, operand_2: Value) -> BinaryOp:
-        return BinaryOp(operand_1, "&&", operand_2)
+    def conjunction(self, operand_1: Value, operand_2: Value) -> LogicBinaryOp:
+        return LogicBinaryOp(operand_1, "&&", operand_2)
 
     def negation(self, operand: Value) -> Value:
-        if isinstance(operand, UnaryOp) and operand.operator == "!":
+        if isinstance(operand, Negation):
             return operand.operand
         else:
-            return UnaryOp("!", operand)
+            return Negation(operand)
 
 
     def comparison(
@@ -94,25 +96,25 @@ class FlintParser(Transformer):
 
     def sum(
             self, operand_1: Value, operator: Literal["+", "-"],
-            operand_2: Value) -> BinaryOp:
-        return BinaryOp(operand_1, operator, operand_2)
+            operand_2: Value) -> MathBinaryOp:
+        return MathBinaryOp(operand_1, operator, operand_2)
 
     def term(
             self, operand_1: Value, operator: Literal["*", "/"],
-            operand_2: Value) -> BinaryOp:
-        return BinaryOp(operand_1, operator, operand_2)
+            operand_2: Value) -> MathBinaryOp:
+        return MathBinaryOp(operand_1, operator, operand_2)
 
     def signed_power(
             self, operator: Literal["+", "-"], operand: Value) -> Value:
         if operator == "+":
             return operand
-        elif isinstance(operand, UnaryOp) and operand.operator == "-":
+        elif isinstance(operand, Negative):
             return operand.operand
         else:
-            return UnaryOp("-", operand)
+            return Negative(operand)
 
-    def power(self, operand_1: Value, operand_2: Value) -> BinaryOp:
-        return BinaryOp(operand_1, "^", operand_2)
+    def power(self, operand_1: Value, operand_2: Value) -> MathBinaryOp:
+        return MathBinaryOp(operand_1, "^", operand_2)
 
 
     def resource_location(

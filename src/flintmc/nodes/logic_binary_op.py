@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 
 @dataclass(slots=True)
-class BinaryOp(Node):
+class LogicBinaryOp(Node):
     operand_1: Value
-    operator: Literal["+", "-", "*", "/", "^", "||", "&&"]
+    operator: Literal["&&", "||"]
     operand_2: Value
